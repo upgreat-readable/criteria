@@ -1,0 +1,5 @@
+export const russianLanguage = 'rus'
+export const literature = 'lit'
+export const socialScience = 'soc'
+export const history = 'his'
+export const englishLanguage = 'eng'
