@@ -21,6 +21,7 @@ var SocialScience = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SocialScience.prototype.decide = function () {
+        this.checkCriterionExists(['K1', 'K2', 'K3', 'K4']);
         //расхождение итоговых оценок К двух экспертов составляет 3 или более баллов
         if (Math.abs(this.firstCritSum - this.secondCritSum) >= 3) {
             this.decisionResult.decision = true;
@@ -33,6 +34,10 @@ var SocialScience = /** @class */ (function (_super) {
             this.decisionResult.decision = true;
         }
         //@todo либо расхождение по оценке K1=0
+        if ((this.firstFileCriterions['K1'] === 0 && this.secondFileCriterions['K8'] !== 0) ||
+            (this.secondFileCriterions['K1'] === 0 && this.firstFileCriterions['K8'] !== 0)) {
+            this.decisionResult.decision = true;
+        }
         return this.decisionResult;
     };
     return SocialScience;

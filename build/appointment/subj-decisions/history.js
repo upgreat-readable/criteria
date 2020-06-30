@@ -21,7 +21,7 @@ var History = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     History.prototype.decide = function () {
-        this.checkCriterionExists(['K1', 'K2', 'K3', 'K6']);
+        this.checkCriterionExists(['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7']);
         //расхождение итоговых оценок К двух экспертов составляет 5 или более баллов
         if (Math.abs(this.firstCritSum - this.secondCritSum) >= 5) {
             this.decisionResult.decision = true;
