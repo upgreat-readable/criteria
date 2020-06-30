@@ -1,6 +1,7 @@
-import {RussianL} from "./subj-processors/russianL";
-import {CriterionFabric} from "./criterionFabric";
+import {RussianL} from "./estimate/subj-processors/russianL";
+import {CriterionFabric} from "./estimate/criterionFabric";
 import {Operations} from "./support/operations";
+import {AppointmentFabric} from "./appointment/appointmentFabric";
 
 const markUpExample = {
     metas: {
@@ -15,9 +16,9 @@ const markUpExample = {
         timeSecondMarkup: 'timeSecondMarkup',
     },
     criterias: {
-        'K1': 'невозможно оценить (нет исходного текста)',
-        'K2': 'невозможно оценить (нет исходного текста)',
-        'K3': 'невозможно оценить (нет исходного текста)'
+        'K1': 0,
+        'K2': 0,
+        'K3': 0
     },
     selections: [
         {
@@ -269,3 +270,5 @@ const markUpExample = {
 let y = new CriterionFabric(markUpExample).run()
 console.log(y);
 
+let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()
+console.log(x);

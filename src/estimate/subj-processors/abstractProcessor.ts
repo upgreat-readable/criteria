@@ -1,4 +1,4 @@
-import {MarkUpData} from "../interfaces/iCriterionFabric";
+import {MarkUpData} from "../../interfaces/iCriterionFabric";
 
 export abstract class AbstractProcessor {
     punctuationMarks = ['.', ',', ':', ';', '-', '–', '?', '!', '_']

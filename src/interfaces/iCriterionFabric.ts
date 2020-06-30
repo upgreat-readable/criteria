@@ -1,11 +1,11 @@
-import {AbstractProcessor} from "../subj-processors/abstractProcessor";
+import {AbstractProcessor} from "../estimate/subj-processors/abstractProcessor";
 
 export interface ICriterionFabric {
     decisionCriterionClass(subj: string): AbstractProcessor
     getSubj(): string
 }
 
-export type ArCriterions = {[key: string]: string}
+export type ArCriterions = {[key: string]: number}
 export type MarkUpData = {
     metas: {
         topic: string,
@@ -18,7 +18,7 @@ export type MarkUpData = {
         timeMarkup: string,
     },
     criterias: {
-        [key: string]: string
+        [key: string]: number
     },
     selections: [
         {

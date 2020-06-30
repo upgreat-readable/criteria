@@ -1,10 +1,10 @@
 import {RussianL} from "./subj-processors/russianL";
 import {AbstractProcessor} from "./subj-processors/abstractProcessor";
-import * as iCriterion from "./interfaces/iCriterionFabric";
+import * as iCriterion from "../interfaces/iCriterionFabric";
 import {Literature} from "./subj-processors/literature";
 import {SocialScience} from "./subj-processors/socialScience";
 import {History} from "./subj-processors/history";
-import * as subjCodes from "./support/subjectCodes"
+import * as subjCodes from "../support/subjectCodes"
 import {EnglishL} from "./subj-processors/englishL";
 
 export class CriterionFabric implements iCriterion.ICriterionFabric

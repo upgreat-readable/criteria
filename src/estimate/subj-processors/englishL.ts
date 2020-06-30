@@ -1,5 +1,5 @@
 import {AbstractProcessor} from "./abstractProcessor";
-import {Operations} from "../support/operations";
+import {Operations} from "../../support/operations";
 
 export class EnglishL extends AbstractProcessor {
     criterions = {

@@ -1,57 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var criterionFabric_1 = require("./criterionFabric");
-var engMarkUp = {
-    metas: {
-        topic: 'topic',
-        class: 11,
-        year: 2020,
-        subject: 'eng',
-        test: 'test',
-        category: 'category',
-        expert: 'expert',
-        timeMarkup: 'timeMarkup',
-        timeSecondMarkup: 'timeSecondMarkup',
-    },
-    selections: [
-        {
-            id: 2,
-            code: 'ПРОБЛЕМА',
-            startSelection: 10,
-            endSelection: 20,
-            tag: 'tag1'
-        },
-        {
-            id: 2,
-            code: 'ЛМНЕНИЕ',
-            startSelection: 20,
-            endSelection: 30,
-            tag: 'tagL1'
-        },
-        {
-            id: 2,
-            code: 'ДОВОД',
-            startSelection: 30,
-            endSelection: 40,
-            tag: 'tagL1'
-        },
-        {
-            id: 2,
-            code: 'ДОВОД',
-            startSelection: 40,
-            endSelection: 50,
-            tag: 'tagL1'
-        },
-        {
-            id: 2,
-            code: 'ПРМНЕНИЕ',
-            startSelection: 50,
-            endSelection: 60,
-            tag: 'tagP1'
-        },
-    ],
-    originalText: "Подтип ошибки или комментарий кратко объясняет учащемуся суть ошибки. Для каждого типа ошибок в классификаторе предусмотрено несколько подтипов. Каждому подтипу соответствует свой стандартный комментарий (то есть подтип ошибки – это, по сути, аббревиатура для стандартного комментария). Если эксперт считает, что ни один из стандартных комментариев не подходит для данного случая, то он может записать свой комментарий. Текст комментария должен быть лаконичным и называть типовую ошибку, встречающуюся во многих работах. Комментарий не должен обращаться к тексту данной работы."
-};
+var criterionFabric_1 = require("./estimate/criterionFabric");
+var appointmentFabric_1 = require("./appointment/appointmentFabric");
 var markUpExample = {
     metas: {
         topic: 'topic',
@@ -65,9 +15,9 @@ var markUpExample = {
         timeSecondMarkup: 'timeSecondMarkup',
     },
     criterias: {
-        'K1': 'невозможно оценить (нет исходного текста)',
-        'K2': 'невозможно оценить (нет исходного текста)',
-        'K3': 'невозможно оценить (нет исходного текста)'
+        'K1': 0,
+        'K2': 0,
+        'K3': 0
     },
     selections: [
         {
@@ -315,5 +265,7 @@ var markUpExample = {
     ],
     originalText: "Подтип ошибки или комментарий кратко объясняет учащемуся суть ошибки. Для каждого типа ошибок в классификаторе предусмотрено несколько подтипов. Каждому подтипу соответствует свой стандартный комментарий (то есть подтип ошибки – это, по сути, аббревиатура для стандартного комментария). Если эксперт считает, что ни один из стандартных комментариев не подходит для данного случая, то он может записать свой комментарий. Текст комментария должен быть лаконичным и называть типовую ошибку, встречающуюся во многих работах. Комментарий не должен обращаться к тексту данной работы."
 };
-var y = new criterionFabric_1.CriterionFabric(engMarkUp).run();
+var y = new criterionFabric_1.CriterionFabric(markUpExample).run();
 console.log(y);
+var x = new appointmentFabric_1.AppointmentFabric(markUpExample, markUpExample).appointThirdExpert();
+console.log(x);

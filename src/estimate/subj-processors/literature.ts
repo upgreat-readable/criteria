@@ -1,5 +1,5 @@
 import {AbstractProcessor} from "./abstractProcessor";
-import * as constants from "../support/constants";
+import * as constants from "../../support/constants";
 
 export class Literature extends AbstractProcessor {
     criterions = {
