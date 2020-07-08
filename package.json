@@ -1,0 +1,13 @@
+{
+  "name": "@webpractik/readable_io.criterion",
+  "version": "1.0.0",
+  "description": "readable criterion package",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpractik/readable_io.criterion.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "author": ""
+}
