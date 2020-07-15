@@ -44,6 +44,6 @@ export class CriterionFabric implements iCriterion.ICriterionFabric
     }
 
     public getSubj(): string {
-        return this.markUpExample.metas.subject
+        return this.markUpExample.meta.subject
     }
 }

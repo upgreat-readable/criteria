@@ -54,7 +54,7 @@ var CriterionFabric = /** @class */ (function () {
         throw new Error('Данный предмет не поддерживается сервисом распознавания критериев.');
     };
     CriterionFabric.prototype.getSubj = function () {
-        return this.markUpExample.metas.subject;
+        return this.markUpExample.meta.subject;
     };
     return CriterionFabric;
 }());

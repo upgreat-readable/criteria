@@ -55,10 +55,10 @@ var AppointmentFabric = /** @class */ (function () {
         throw new Error('Данный предмет не поддерживается сервисом распознавания критериев.');
     };
     AppointmentFabric.prototype.getSubj = function () {
-        if (this.firstMarkUp.metas.subject !== this.secondMarkUp.metas.subject) {
+        if (this.firstMarkUp.meta.subject !== this.secondMarkUp.meta.subject) {
             throw new Error('В сервис назначения третьего эксперта были отправлены разметки разных предметов.');
         }
-        return this.firstMarkUp.metas.subject;
+        return this.firstMarkUp.meta.subject;
     };
     return AppointmentFabric;
 }());

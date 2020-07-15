@@ -4,7 +4,7 @@ import {Operations} from "./support/operations";
 import {AppointmentFabric} from "./appointment/appointmentFabric";
 
 const markUpExample = {
-    metas: {
+    meta: {
         topic: 'topic',
         class: 11,
         year: 2020,

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var criterionFabric_1 = require("./estimate/criterionFabric");
 var appointmentFabric_1 = require("./appointment/appointmentFabric");
 var markUpExample = {
-    metas: {
+    meta: {
         topic: 'topic',
         class: 11,
         year: 2020,

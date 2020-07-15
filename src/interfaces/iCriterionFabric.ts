@@ -7,7 +7,7 @@ export interface ICriterionFabric {
 
 export type ArCriterions = {[key: string]: number}
 export type MarkUpData = {
-    metas: {
+    meta: {
         topic: string,
         class: number,
         year: number,
