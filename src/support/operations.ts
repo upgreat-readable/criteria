@@ -26,8 +26,8 @@ export class Operations {
             return nums[0] - nums[1]
         }
 
-        var i
-        var diff: number = nums[0] - nums[1]
+        let i
+        let diff: number = nums[0] - nums[1]
 
         for (i = 2; i < nums.length; i++) {
             diff = diff - nums[i]

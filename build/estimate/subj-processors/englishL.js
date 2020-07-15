@@ -192,11 +192,11 @@ var EnglishL = /** @class */ (function (_super) {
         this.calculateReasonErrors(arStartParams, arEndParams);
         // console.log(this.firstClose);
         // console.log(this.endClose);
-        console.log('----------------');
-        console.log(arStartParams);
-        console.log('-------end------');
-        console.log(arEndParams);
-        console.log('----------------');
+        // console.log('----------------');
+        // console.log(arStartParams);
+        // console.log('-------end------');
+        // console.log(arEndParams);
+        // console.log('----------------');
         var arStrStandard = [];
         var arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ'];
         for (var i in this.markUpData.selections) {
@@ -214,7 +214,7 @@ var EnglishL = /** @class */ (function (_super) {
                 // console.log('----- элемент - ' + item + '   не на своем месте');
             }
         });
-        console.log(this.oshPlanErrorsCount);
+        // console.log(this.oshPlanErrorsCount);
     };
     EnglishL.prototype.setReasonCoordinates = function () {
         var l = 0;
@@ -247,8 +247,8 @@ var EnglishL = /** @class */ (function (_super) {
         }
         else {
             for (var k in this.arReason) {
-                console.log('ключ');
-                console.log(k);
+                // console.log('ключ');
+                // console.log(k);
                 //1й довод должен следовать аккурат за ЛМНЕНИЕ-м
                 this.firstClose = this.findTheClosest(arStartParams, this.arReason[k].start);
                 this.endClose = this.findTheClosest(arEndParams, this.arReason[k].end);
@@ -256,7 +256,7 @@ var EnglishL = /** @class */ (function (_super) {
                 if (this.LMElem.startSelection !== this.firstClose && this.PMElem.endSelection !== this.endClose) {
                     this.oshPlanErrorsCount++;
                 }
-                console.log(k);
+                // console.log(k);
             }
         }
         if (this.arPReason.length === 0) {
@@ -271,7 +271,7 @@ var EnglishL = /** @class */ (function (_super) {
                 if (this.LMElem.startSelection !== this.firstPClose && this.LMElem.endSelection !== this.endPClose) {
                     this.oshPlanErrorsCount++;
                 }
-                console.log(f);
+                // console.log(f);
             }
         }
     };

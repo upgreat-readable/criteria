@@ -259,7 +259,7 @@ export class History extends AbstractProcessor {
             this.roles[roleIndex].elems = roleElems
         }
 
-        console.log(this.roles);
+        // console.log(this.roles);
     }
 
     setRcFragmentVariables(arRoleIndex = [0, 1]): void {
@@ -278,7 +278,7 @@ export class History extends AbstractProcessor {
             this.reasonConsequence[roleIndex].elems = roleElems
         }
 
-        console.log(this.reasonConsequence);
+        // console.log(this.reasonConsequence);
     }
 
 

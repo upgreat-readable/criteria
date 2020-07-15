@@ -242,7 +242,7 @@ var History = /** @class */ (function (_super) {
             }
             this.roles[roleIndex].elems = roleElems;
         }
-        console.log(this.roles);
+        // console.log(this.roles);
     };
     History.prototype.setRcFragmentVariables = function (arRoleIndex) {
         if (arRoleIndex === void 0) { arRoleIndex = [0, 1]; }
@@ -259,7 +259,7 @@ var History = /** @class */ (function (_super) {
             }
             this.reasonConsequence[roleIndex].elems = roleElems;
         }
-        console.log(this.reasonConsequence);
+        // console.log(this.reasonConsequence);
     };
     return History;
 }(abstractProcessor_1.AbstractProcessor));

@@ -181,11 +181,11 @@ export class EnglishL extends AbstractProcessor {
 
         // console.log(this.firstClose);
         // console.log(this.endClose);
-        console.log('----------------');
-        console.log(arStartParams);
-        console.log('-------end------');
-        console.log(arEndParams);
-        console.log('----------------');
+        // console.log('----------------');
+        // console.log(arStartParams);
+        // console.log('-------end------');
+        // console.log(arEndParams);
+        // console.log('----------------');
 
         let arStrStandard: string[] = []
         let arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ']
@@ -208,7 +208,7 @@ export class EnglishL extends AbstractProcessor {
             }
         })
 
-        console.log(this.oshPlanErrorsCount);
+        // console.log(this.oshPlanErrorsCount);
     }
 
     setReasonCoordinates(): void {
@@ -243,8 +243,8 @@ export class EnglishL extends AbstractProcessor {
             this.oshPlanErrorsCount++
         } else {
             for (let k in this.arReason) {
-                console.log('ключ');
-                console.log(k);
+                // console.log('ключ');
+                // console.log(k);
                 //1й довод должен следовать аккурат за ЛМНЕНИЕ-м
                 this.firstClose = this.findTheClosest(arStartParams, this.arReason[k].start)
                 this.endClose = this.findTheClosest(arEndParams, this.arReason[k].end)
@@ -253,7 +253,7 @@ export class EnglishL extends AbstractProcessor {
                 if (this.LMElem.startSelection !== this.firstClose && this.PMElem.endSelection !== this.endClose) {
                     this.oshPlanErrorsCount++
                 }
-                console.log(k);
+                // console.log(k);
             }
         }
 
@@ -269,7 +269,7 @@ export class EnglishL extends AbstractProcessor {
                 if (this.LMElem.startSelection !== this.firstPClose && this.LMElem.endSelection !== this.endPClose) {
                     this.oshPlanErrorsCount++
                 }
-                console.log(f);
+                // console.log(f);
             }
         }
     }
