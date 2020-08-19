@@ -90,8 +90,8 @@ var EnglishL = /** @class */ (function (_super) {
     };
     EnglishL.prototype.setK1 = function () {
         var oshAspects = this.setOshAspects();
-        //@todo А.непрод - не понятно, как считать
-        if (this.formattedEr['А.объем'] || this.formattedEr['А.непрод']) {
+        var unproductivePercent = this.setUnproductivePercent();
+        if (this.formattedEr['А.объем'] || unproductivePercent > 30) {
             this.criterions.K1 = 0;
         }
         else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
@@ -162,6 +162,21 @@ var EnglishL = /** @class */ (function (_super) {
             this.criterions.K5 = 0;
         }
     };
+    EnglishL.prototype.setUnproductivePercent = function () {
+        var resultPercent = 0;
+        var upProdWordsCount = 0;
+        var totalWordsCount = operations_1.Operations.countWords(this.markUpData.text);
+        for (var i in this.markUpData.selections) {
+            if (this.markUpData.selections[i].type === 'А.непрод') {
+                upProdWordsCount += operations_1.Operations.countWords(this.markUpData.text.substring(this.markUpData.selections[i].startSelection, this.markUpData.selections[i].endSelection));
+            }
+        }
+        if (upProdWordsCount !== 0) {
+            resultPercent = (upProdWordsCount / totalWordsCount) * 100;
+            return Math.round(resultPercent);
+        }
+        return resultPercent;
+    };
     EnglishL.prototype.setOshAspects = function () {
         var param1 = this.formattedEr['ЛМНЕНИЕ'] === 0 ? 1 : 0;
         var param2 = this.formattedEr['ПРМНЕНИЕ'] === 0 ? 1 : 0;
@@ -172,19 +187,84 @@ var EnglishL = /** @class */ (function (_super) {
     //@todo параметр ошПлан до конференции считаем равным 1
     EnglishL.prototype.setOshErrors = function () {
         var _this = this;
+        var oshPlanCount = 0;
+        var oshHelp = [
+            {
+                'code': 'ПРОБЛЕМА',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ЛМНЕНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ПРМНЕНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ОБОСНОВАНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ВЫВОД',
+                'start': 0,
+                'end': 0,
+            },
+        ];
+        //установим координаты смыслового блока ПРОБЛЕМА
+        for (var i in this.markUpData.selections) {
+            for (var q in oshHelp) {
+                if (oshHelp[q].code === this.markUpData.selections[i].type) {
+                    oshHelp[q].start = this.markUpData.selections[i].startSelection;
+                    oshHelp[q].end = this.markUpData.selections[i].endSelection;
+                }
+            }
+        }
+        console.log('----------' + JSON.stringify(oshHelp, null, 4));
+        var errorsCount = 0;
+        oshHelp.forEach(function (item, key, array) {
+            // console.log('-------'+array[key+1].start);
+            if (key !== array.length - 1) {
+                if (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end) {
+                    errorsCount++;
+                }
+            }
+        });
+        // for (let j in oshHelp) {
+        //     console.log(oshHelp[j]);
+        //     if (parseFloat(j) !== oshHelp.length - 1) {
+        //         console.log(oshHelp[parseFloat(j)+1].code);
+        //
+        //         if (oshHelp[parseFloat(j)+1].start < oshHelp[j].start && oshHelp[parseFloat(j)+1].end < oshHelp[j].end) {
+        //
+        //             errorsCount++
+        //         }
+        //     }
+        // }
+        console.log(errorsCount);
+        //запустим проверку на корректность последовательности ПРОБЛЕМА, ЛМНЕНИЕ, ПРМНЕНИЕ, ОБОСНОВАНИЕ, ВЫВОД
+        //ведь, иными словами, положение см. блока в системе - это его координаты
+        // for (let j in oshHelp) {
+        //     if (oshHelp['ПРОБЛЕМА'])
+        //
+        // }
         return this.oshPlanErrorsCount = 1;
         var arStartParams = {};
         var arEndParams = {};
         for (var i in this.markUpData.selections) {
             //
-            if (this.markUpData.selections[i].code !== 'ДОВОД') {
-                arStartParams[this.markUpData.selections[i].code] = this.markUpData.selections[i].startSelection;
-                arEndParams[this.markUpData.selections[i].code] = this.markUpData.selections[i].endSelection;
+            if (this.markUpData.selections[i].type !== 'ДОВОД') {
+                arStartParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].startSelection;
+                arEndParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].endSelection;
             }
-            if (this.markUpData.selections[i].code === 'ЛМНЕНИЕ') {
+            if (this.markUpData.selections[i].type === 'ЛМНЕНИЕ') {
                 this.LMElem = this.markUpData.selections[i];
             }
-            if (this.markUpData.selections[i].code === 'ПРМНЕНИЕ') {
+            if (this.markUpData.selections[i].type === 'ПРМНЕНИЕ') {
                 this.PMElem = this.markUpData.selections[i];
             }
         }
@@ -200,8 +280,8 @@ var EnglishL = /** @class */ (function (_super) {
         var arStrStandard = [];
         var arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ'];
         for (var i in this.markUpData.selections) {
-            if (arStrMarkUp.includes(this.markUpData.selections[i].code)) {
-                arStrStandard.push(this.markUpData.selections[i].code);
+            if (arStrMarkUp.includes(this.markUpData.selections[i].type)) {
+                arStrStandard.push(this.markUpData.selections[i].type);
             }
         }
         //считаем разницу в массивах смысловых блоков
@@ -220,7 +300,7 @@ var EnglishL = /** @class */ (function (_super) {
         var l = 0;
         var q = 0;
         for (var j in this.markUpData.selections) {
-            if (this.markUpData.selections[j].code === 'ДОВОД') {
+            if (this.markUpData.selections[j].type === 'ДОВОД') {
                 if (this.markUpData.selections[j].tag === this.LMElem.tag) {
                     this.arReason[l] = {
                         id: l,

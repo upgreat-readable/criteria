@@ -1,7 +1,8 @@
 import {AbstractProcessor} from "./abstractProcessor";
+import {Operations} from "../../support/operations";
+import {socScienceMaxPoints} from "../../support/constants";
 
-export class SocialScience extends AbstractProcessor
-{
+export class SocialScience extends AbstractProcessor {
     criterions = {
         K1: 0,
         K2: 0,
@@ -41,17 +42,20 @@ export class SocialScience extends AbstractProcessor
         this.setK3()
         this.setK4()
 
-        return this.criterions
+        if (Operations.objectSum(this.criterions) > socScienceMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
+        }
 
+        return this.criterions
     }
 
-    setK1 () : void {
+    setK1(): void {
         if (this.formattedEr['ИДЕЯ'] > 0 && this.formattedEr['о.смысл'] === 0 && this.formattedEr['о.подмена'] === 0 && this.formattedEr['о.пересказ'] === 0) {
             this.criterions.K1 = 1
         }
     }
 
-    setK2 () : void {
+    setK2(): void {
         if (this.formattedEr['о.упрощ'] > 0) {
             this.criterions.K2 = 0
         } else {
@@ -63,12 +67,12 @@ export class SocialScience extends AbstractProcessor
         }
     }
 
-    setK3 () : void {
+    setK3(): void {
         let logicFlag = this.formattedEr['ЛОГИКА'] > 0 ? 1 : 0
         this.criterions.K3 = Math.max(0, (logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод']))
     }
 
-    setK4 () : void {
+    setK4(): void {
         let exSoc = this.formattedEr['ПРИМЕР.ОБЩ'] > 1 ? 1 : 0
         let exPerson = this.formattedEr['ПРИМЕР.ЛИЧ'] > 1 ? 1 : 0
         let exHist = this.formattedEr['ПРИМЕР.ИСТ'] > 1 ? 1 : 0

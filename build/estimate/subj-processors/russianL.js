@@ -35,6 +35,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RussianL = void 0;
 var abstractProcessor_1 = require("./abstractProcessor");
 var constants = __importStar(require("../../support/constants"));
+var operations_1 = require("../../support/operations");
+var constants_1 = require("../../support/constants");
 var RussianL = /** @class */ (function (_super) {
     __extends(RussianL, _super);
     function RussianL() {
@@ -111,6 +113,9 @@ var RussianL = /** @class */ (function (_super) {
         this.setK11();
         this.setK12();
         this.setK6();
+        if (operations_1.Operations.objectSum(this.criterions) > constants_1.russianMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
+        }
         return this.criterions;
     };
     RussianL.prototype.setK1 = function () {
@@ -172,12 +177,12 @@ var RussianL = /** @class */ (function (_super) {
         }
     };
     RussianL.prototype.setK7 = function () {
-        //@todo - выяснить ситуацию с орфографическими ошибками
-        this.criterions.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag);
+        // this.criterions.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
+        this.criterions.K7 = 3;
     };
     RussianL.prototype.setK8 = function () {
-        //@todo - выяснить ситуацию с пунктуационными ошибками
-        this.criterions.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag));
+        // this.criterions.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+        this.criterions.K8 = 3.5;
     };
     RussianL.prototype.setK9 = function () {
         this.criterions.K9 = Math.max(0, Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag));

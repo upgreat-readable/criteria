@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractProcessor = void 0;
+var operations_1 = require("../../support/operations");
 var AbstractProcessor = /** @class */ (function () {
     function AbstractProcessor(markUpData) {
         var _this = this;
@@ -9,9 +10,13 @@ var AbstractProcessor = /** @class */ (function () {
         this.predefinedValues = [];
         this.getCountIds = function (target) {
             var result = {};
+            var tagTempVar = {};
             target.forEach(function (item) {
                 if (item.code !== undefined) {
-                    result[item.code] ? result[item.code]++ : result[item.code] = 1;
+                    result[item.code] && !tagTempVar[item.code] ? result[item.code]++ : result[item.code] = 1;
+                    if (item.tag !== '') {
+                        tagTempVar[item.code] = true;
+                    }
                 }
             });
             return _this.countCategoryMistakes(result);
@@ -19,19 +24,12 @@ var AbstractProcessor = /** @class */ (function () {
         this.markUpData = markUpData;
     }
     AbstractProcessor.prototype.countWords = function () {
-        var newArray = this.markUpData.originalText.split(' '), i, j;
-        for (i = 0, j = 0; i < newArray.length; i++) {
-            if (this.punctuationMarks.includes(newArray[i])) {
-                continue;
-            }
-            j++;
-        }
-        this.wordsCount = j;
+        this.wordsCount = operations_1.Operations.countWords(this.markUpData.text);
     };
     AbstractProcessor.prototype.tallyErrors = function () {
         var arSelCounts = [];
         for (var i in this.markUpData.selections) {
-            arSelCounts.push({ code: this.markUpData.selections[i].code, count: 1 });
+            arSelCounts.push({ code: this.markUpData.selections[i].type, tag: this.markUpData.selections[i].tag, count: 1 });
         }
         this.formattedEr = this.getCountIds(arSelCounts);
     };
@@ -50,6 +48,7 @@ var AbstractProcessor = /** @class */ (function () {
         var factualMistakes = 0;
         //этические ошибки
         var ethicalMistakes = 0;
+        console.log(result);
         for (var key in result) {
             if (key.match(/^Г\./)) {
                 grammaticalMistakes++;

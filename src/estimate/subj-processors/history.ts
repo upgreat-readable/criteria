@@ -1,5 +1,6 @@
 import {AbstractProcessor} from "./abstractProcessor";
 import {Operations} from "../../support/operations";
+import {historyMaxPoints} from "../../support/constants";
 
 export class History extends AbstractProcessor {
     criterions = {
@@ -95,6 +96,7 @@ export class History extends AbstractProcessor {
      */
     analyze(): any {
         this.fillBasicRoleFragments()
+
         super.analyze()
 
         this.setK1()
@@ -110,6 +112,9 @@ export class History extends AbstractProcessor {
         this.setK6()
         this.setK7()
 
+        if (Operations.objectSum(this.criterions) > historyMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
+        }
 
         return this.criterions
     }
@@ -120,6 +125,7 @@ export class History extends AbstractProcessor {
 
     //@todo оптимизировать через foreach определение двух параметров в ряду
     setK2(): void {
+
         let sum1 = Operations.sum(this.roles[0].elems['И.личность'], this.roles[0].elems['И.лсвязь'], this.roles[0].elems['И.лпериод'], this.roles[0].elems['И.лроль'], this.roles[0].elems['И.лдейств'])
         let factor1 = Operations.compare(sum1, 0, '>')
 
@@ -195,7 +201,7 @@ export class History extends AbstractProcessor {
         let incS: number = 0
 
         for (let i in this.markUpData.selections) {
-            switch (this.markUpData.selections[i].code) {
+            switch (this.markUpData.selections[i].type) {
                 case 'РОЛЬ':
                     this.fillTheFirstTwoRoles(incR, this.markUpData.selections[i]) ? incR++ : ''
                     break
@@ -249,7 +255,7 @@ export class History extends AbstractProcessor {
             let roleElems: any = this.roles[roleIndex].elems
 
             for (let k in this.markUpData.selections) {
-                let curCode: string = this.markUpData.selections[k].code
+                let curCode: string = this.markUpData.selections[k].type
                 let curTag: string = this.markUpData.selections[k].tag
                 if (roleElems.hasOwnProperty(curCode) && curTag === roleTag) {
                     roleElems[curCode] = roleElems[curCode] + 1
@@ -268,7 +274,7 @@ export class History extends AbstractProcessor {
             let roleElems: any = this.reasonConsequence[roleIndex].elems
 
             for (let k in this.markUpData.selections) {
-                let curCode: string = this.markUpData.selections[k].code
+                let curCode: string = this.markUpData.selections[k].type
                 let curTag: string = this.markUpData.selections[k].tag
                 if (roleElems.hasOwnProperty(curCode) && curTag === roleTag) {
                     roleElems[curCode] = roleElems[curCode] + 1

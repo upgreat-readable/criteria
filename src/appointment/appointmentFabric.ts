@@ -42,7 +42,6 @@ export class AppointmentFabric {
             case subjCodes.englishLanguage:
                 return new EnglishL(this.firstMarkUp, this.secondMarkUp)
         }
-
         throw new Error('Данный предмет не поддерживается сервисом распознавания критериев.')
     }
 

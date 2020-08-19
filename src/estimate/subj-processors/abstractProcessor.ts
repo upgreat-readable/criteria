@@ -1,4 +1,5 @@
 import {MarkUpData} from "../../interfaces/iCriterionFabric";
+import {Operations} from "../../support/operations";
 
 export abstract class AbstractProcessor {
     punctuationMarks = ['.', ',', ':', ';', '-', '–', '?', '!', '_']
@@ -13,32 +14,31 @@ export abstract class AbstractProcessor {
     }
 
     countWords(): void {
-        let newArray = this.markUpData.originalText.split(' '), i, j
-        for (i = 0, j = 0; i < newArray.length; i++) {
-            if (this.punctuationMarks.includes(newArray[i])) {
-                continue;
-            }
-            j++;
-        }
-        this.wordsCount = j;
+        this.wordsCount = Operations.countWords(this.markUpData.text);
     }
 
     tallyErrors(): void {
         let arSelCounts = []
 
         for (let i in this.markUpData.selections) {
-            arSelCounts.push({code: this.markUpData.selections[i].code, count: 1})
+            arSelCounts.push({code: this.markUpData.selections[i].type, tag: this.markUpData.selections[i].tag, count: 1})
         }
 
         this.formattedEr = this.getCountIds(arSelCounts)
     }
 
-    getCountIds = (target: { code: string, count: number }[]) => {
+    getCountIds = (target: { code: string, tag: string, count: number }[]) => {
         type Result = { [key: string]: number }
+        type tagMark = { [key: string]: boolean }
         let result: Result = {}
+        let tagTempVar: tagMark = {}
+
         target.forEach(item => {
             if (item.code !== undefined) {
-                result[item.code] ? result[item.code]++ : result[item.code] = 1
+                result[item.code] && !tagTempVar[item.code] ? result[item.code]++ : result[item.code] = 1
+                if (item.tag !== '') {
+                    tagTempVar[item.code] = true
+                }
             }
         })
         return this.countCategoryMistakes(result);
@@ -60,6 +60,8 @@ export abstract class AbstractProcessor {
         let factualMistakes: number = 0
         //этические ошибки
         let ethicalMistakes: number = 0
+
+        console.log(result);
 
         for (let key in result) {
             if (key.match(/^Г\./)) {

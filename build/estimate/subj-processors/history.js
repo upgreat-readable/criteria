@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.History = void 0;
 var abstractProcessor_1 = require("./abstractProcessor");
 var operations_1 = require("../../support/operations");
+var constants_1 = require("../../support/constants");
 var History = /** @class */ (function (_super) {
     __extends(History, _super);
     function History() {
@@ -122,6 +123,9 @@ var History = /** @class */ (function (_super) {
         this.setK5();
         this.setK6();
         this.setK7();
+        if (operations_1.Operations.objectSum(this.criterions) > constants_1.historyMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
+        }
         return this.criterions;
     };
     History.prototype.setK1 = function () {
@@ -185,7 +189,7 @@ var History = /** @class */ (function (_super) {
         var incP = 0;
         var incS = 0;
         for (var i in this.markUpData.selections) {
-            switch (this.markUpData.selections[i].code) {
+            switch (this.markUpData.selections[i].type) {
                 case 'РОЛЬ':
                     this.fillTheFirstTwoRoles(incR, this.markUpData.selections[i]) ? incR++ : '';
                     break;
@@ -234,7 +238,7 @@ var History = /** @class */ (function (_super) {
             var roleTag = this.roles[roleIndex].tag;
             var roleElems = this.roles[roleIndex].elems;
             for (var k in this.markUpData.selections) {
-                var curCode = this.markUpData.selections[k].code;
+                var curCode = this.markUpData.selections[k].type;
                 var curTag = this.markUpData.selections[k].tag;
                 if (roleElems.hasOwnProperty(curCode) && curTag === roleTag) {
                     roleElems[curCode] = roleElems[curCode] + 1;
@@ -251,7 +255,7 @@ var History = /** @class */ (function (_super) {
             var roleTag = this.reasonConsequence[roleIndex].rcIdTag;
             var roleElems = this.reasonConsequence[roleIndex].elems;
             for (var k in this.markUpData.selections) {
-                var curCode = this.markUpData.selections[k].code;
+                var curCode = this.markUpData.selections[k].type;
                 var curTag = this.markUpData.selections[k].tag;
                 if (roleElems.hasOwnProperty(curCode) && curTag === roleTag) {
                     roleElems[curCode] = roleElems[curCode] + 1;

@@ -6,6 +6,7 @@ import {SocialScience} from "./subj-processors/socialScience";
 import {History} from "./subj-processors/history";
 import * as subjCodes from "../support/subjectCodes"
 import {EnglishL} from "./subj-processors/englishL";
+import {ArCriterions} from "../interfaces/iCriterionFabric";
 
 export class CriterionFabric implements iCriterion.ICriterionFabric
 {
@@ -17,7 +18,7 @@ export class CriterionFabric implements iCriterion.ICriterionFabric
         this.subject = this.getSubj()
     }
 
-    public run() : object {
+    public run() : ArCriterions {
         let subjObject = this.decisionCriterionClass(this.subject)
         return subjObject.analyze()
     }

@@ -4,6 +4,26 @@ exports.Operations = void 0;
 var Operations = /** @class */ (function () {
     function Operations() {
     }
+    Operations.countWords = function (text) {
+        var newArray = text.split(' '), i, j;
+        for (i = 0, j = 0; i < newArray.length; i++) {
+            if (['.', ',', ':', ';', '-', '–', '?', '!', '_'].includes(newArray[i])) {
+                continue;
+            }
+            j++;
+        }
+        return j;
+    };
+    //хелпер суммирующий знач. в объекте
+    Operations.objectSum = function (obj) {
+        var sum = 0;
+        for (var el in obj) {
+            if (obj.hasOwnProperty(el)) {
+                sum += obj[el];
+            }
+        }
+        return sum;
+    };
     //хелпер суммы
     Operations.sum = function () {
         var nums = [];

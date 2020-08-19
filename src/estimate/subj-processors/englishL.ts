@@ -81,9 +81,9 @@ export class EnglishL extends AbstractProcessor {
 
     setK1(): void {
         let oshAspects = this.setOshAspects()
+        let unproductivePercent = this.setUnproductivePercent()
 
-        //@todo А.непрод - не понятно, как считать
-        if (this.formattedEr['А.объем'] || this.formattedEr['А.непрод']) {
+        if (this.formattedEr['А.объем'] || unproductivePercent > 30) {
             this.criterions.K1 = 0
         } else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
             this.criterions.K1 = 3
@@ -144,6 +144,27 @@ export class EnglishL extends AbstractProcessor {
         }
     }
 
+    setUnproductivePercent(): number {
+        let resultPercent: number = 0
+        let upProdWordsCount: number = 0
+        let totalWordsCount: number = Operations.countWords(this.markUpData.text)
+        for (let i in this.markUpData.selections) {
+            if (this.markUpData.selections[i].type === 'А.непрод') {
+                upProdWordsCount += Operations.countWords(this.markUpData.text.substring(
+                    this.markUpData.selections[i].startSelection,
+                    this.markUpData.selections[i].endSelection
+                ))
+            }
+        }
+
+        if (upProdWordsCount !== 0) {
+            resultPercent = (upProdWordsCount / totalWordsCount) * 100
+            return Math.round(resultPercent)
+        }
+
+        return resultPercent
+    }
+
     setOshAspects(): number {
         let param1 = this.formattedEr['ЛМНЕНИЕ'] === 0 ? 1 : 0
         let param2 = this.formattedEr['ПРМНЕНИЕ'] === 0 ? 1 : 0
@@ -155,22 +176,98 @@ export class EnglishL extends AbstractProcessor {
 
     //@todo параметр ошПлан до конференции считаем равным 1
     setOshErrors() {
+        let oshPlanCount: number = 0
+
+        let oshHelp: {code: string, start: number, end: number}[] = [
+            {
+                'code': 'ПРОБЛЕМА',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ЛМНЕНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ПРМНЕНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+             {
+                'code': 'ОБОСНОВАНИЕ',
+                'start': 0,
+                'end': 0,
+            },
+            {
+                'code': 'ВЫВОД',
+                'start': 0,
+                'end': 0,
+            },
+        ]
+
+        //установим координаты смыслового блока ПРОБЛЕМА
+        for (let i in this.markUpData.selections) {
+            for (let q in oshHelp) {
+                if (oshHelp[q].code === this.markUpData.selections[i].type) {
+                    oshHelp[q].start = this.markUpData.selections[i].startSelection
+                    oshHelp[q].end = this.markUpData.selections[i].endSelection
+                }
+            }
+        }
+
+
+        console.log('----------'+JSON.stringify(oshHelp, null, 4));
+
+        let errorsCount: number = 0
+
+
+        oshHelp.forEach(function (item, key, array) {
+            // console.log('-------'+array[key+1].start);
+            if (key !== array.length - 1) {
+                if (array[key].start > array[key+1].start && array[key+1].end < array[key].end) {
+                    errorsCount++
+                }
+            }
+        })
+
+        // for (let j in oshHelp) {
+        //     console.log(oshHelp[j]);
+        //     if (parseFloat(j) !== oshHelp.length - 1) {
+        //         console.log(oshHelp[parseFloat(j)+1].code);
+        //
+        //         if (oshHelp[parseFloat(j)+1].start < oshHelp[j].start && oshHelp[parseFloat(j)+1].end < oshHelp[j].end) {
+        //
+        //             errorsCount++
+        //         }
+        //     }
+        // }
+
+        console.log(errorsCount);
+        //запустим проверку на корректность последовательности ПРОБЛЕМА, ЛМНЕНИЕ, ПРМНЕНИЕ, ОБОСНОВАНИЕ, ВЫВОД
+        //ведь, иными словами, положение см. блока в системе - это его координаты
+        // for (let j in oshHelp) {
+        //     if (oshHelp['ПРОБЛЕМА'])
+        //
+        // }
+
+
         return this.oshPlanErrorsCount = 1
         let arStartParams: { [key: string]: number } = {}
         let arEndParams: { [key: string]: number } = {}
 
         for (let i in this.markUpData.selections) {
             //
-            if (this.markUpData.selections[i].code !== 'ДОВОД') {
-                arStartParams[this.markUpData.selections[i].code] = this.markUpData.selections[i].startSelection
-                arEndParams[this.markUpData.selections[i].code] = this.markUpData.selections[i].endSelection
+            if (this.markUpData.selections[i].type !== 'ДОВОД') {
+                arStartParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].startSelection
+                arEndParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].endSelection
             }
 
-            if (this.markUpData.selections[i].code === 'ЛМНЕНИЕ') {
+            if (this.markUpData.selections[i].type === 'ЛМНЕНИЕ') {
                 this.LMElem = this.markUpData.selections[i]
             }
 
-            if (this.markUpData.selections[i].code === 'ПРМНЕНИЕ') {
+            if (this.markUpData.selections[i].type === 'ПРМНЕНИЕ') {
                 this.PMElem = this.markUpData.selections[i]
             }
         }
@@ -191,8 +288,8 @@ export class EnglishL extends AbstractProcessor {
         let arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ']
 
         for (let i in this.markUpData.selections) {
-            if (arStrMarkUp.includes(this.markUpData.selections[i].code)) {
-                arStrStandard.push(this.markUpData.selections[i].code)
+            if (arStrMarkUp.includes(this.markUpData.selections[i].type)) {
+                arStrStandard.push(this.markUpData.selections[i].type)
             }
         }
 
@@ -215,7 +312,7 @@ export class EnglishL extends AbstractProcessor {
         let l = 0
         let q = 0
         for (let j in this.markUpData.selections) {
-            if (this.markUpData.selections[j].code === 'ДОВОД') {
+            if (this.markUpData.selections[j].type === 'ДОВОД') {
                 if (this.markUpData.selections[j].tag === this.LMElem.tag) {
                     this.arReason[l] = {
                         id: l,

@@ -1,5 +1,7 @@
 import {AbstractProcessor} from './abstractProcessor';
 import * as constants from "../../support/constants";
+import {Operations} from "../../support/operations";
+import {russianMaxPoints} from "../../support/constants";
 export class RussianL extends AbstractProcessor {
     criterions = {
         K1: 0,
@@ -78,6 +80,10 @@ export class RussianL extends AbstractProcessor {
 
         this.setK6()
 
+        if (Operations.objectSum(this.criterions) > russianMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
+        }
+
         return this.criterions
     }
 
@@ -136,13 +142,13 @@ export class RussianL extends AbstractProcessor {
     }
 
     setK7 () : void {
-        //@todo - выяснить ситуацию с орфографическими ошибками
-        this.criterions.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
+        // this.criterions.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
+        this.criterions.K7 = 3
     }
 
     setK8 () : void {
-        //@todo - выяснить ситуацию с пунктуационными ошибками
-        this.criterions.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+        // this.criterions.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+        this.criterions.K8 = 3.5
     }
 
     setK9 () : void {

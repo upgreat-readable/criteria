@@ -35,6 +35,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Literature = void 0;
 var abstractProcessor_1 = require("./abstractProcessor");
 var constants = __importStar(require("../../support/constants"));
+var operations_1 = require("../../support/operations");
+var constants_1 = require("../../support/constants");
 var Literature = /** @class */ (function (_super) {
     __extends(Literature, _super);
     function Literature() {
@@ -86,6 +88,9 @@ var Literature = /** @class */ (function (_super) {
         this.setK3();
         this.setK4();
         this.setK5();
+        if (operations_1.Operations.objectSum(this.criterions) > constants_1.literatureMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
+        }
         return this.criterions;
     };
     Literature.prototype.setK1 = function () {

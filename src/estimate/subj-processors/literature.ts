@@ -1,5 +1,7 @@
 import {AbstractProcessor} from "./abstractProcessor";
 import * as constants from "../../support/constants";
+import {Operations} from "../../support/operations";
+import {literatureMaxPoints} from "../../support/constants";
 
 export class Literature extends AbstractProcessor {
     criterions = {
@@ -52,6 +54,10 @@ export class Literature extends AbstractProcessor {
         this.setK3()
         this.setK4()
         this.setK5()
+
+        if (Operations.objectSum(this.criterions) > literatureMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
+        }
 
         return this.criterions
     }

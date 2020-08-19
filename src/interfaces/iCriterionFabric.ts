@@ -8,14 +8,13 @@ export interface ICriterionFabric {
 export type ArCriterions = {[key: string]: number}
 export type MarkUpData = {
     meta: {
-        topic: string,
-        class: number,
-        year: number,
         subject: string,
         test: string,
         category: string,
-        expert: string,
-        timeMarkup: string,
+        year: number,
+        class: number,
+        theme: string,
+        taskText: string
     },
     criterias: {
         [key: string]: number
@@ -23,15 +22,15 @@ export type MarkUpData = {
     selections: [
         {
             id: number,
+            tag: string,
+            type: string,
+            group: 'meaning' | 'error',
+            comment: string,
+            subtype: string,
+            explanation: string,
             startSelection: number,
             endSelection: number,
-            code: string,
-            comment: string,
-            explanation: string,
-            correction: string,
-            tag: string,
-            type: 'meaning' | 'error',
         }
     ],
-    originalText: string
+    text: string
 }

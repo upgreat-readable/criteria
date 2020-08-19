@@ -15,6 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SocialScience = void 0;
 var abstractProcessor_1 = require("./abstractProcessor");
+var operations_1 = require("../../support/operations");
+var constants_1 = require("../../support/constants");
 var SocialScience = /** @class */ (function (_super) {
     __extends(SocialScience, _super);
     function SocialScience() {
@@ -52,6 +54,9 @@ var SocialScience = /** @class */ (function (_super) {
         this.setK2();
         this.setK3();
         this.setK4();
+        if (operations_1.Operations.objectSum(this.criterions) > constants_1.socScienceMaxPoints) {
+            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
+        }
         return this.criterions;
     };
     SocialScience.prototype.setK1 = function () {

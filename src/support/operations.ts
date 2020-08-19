@@ -1,5 +1,27 @@
 export class Operations {
 
+    static countWords(text: string): number {
+        let newArray = text.split(' '), i, j
+        for (i = 0, j = 0; i < newArray.length; i++) {
+            if (['.', ',', ':', ';', '-', '–', '?', '!', '_'].includes(newArray[i])) {
+                continue;
+            }
+            j++;
+        }
+        return j;
+    }
+
+    //хелпер суммирующий знач. в объекте
+    static objectSum(obj: { [key: string]: number }) {
+        var sum = 0;
+        for (let el in obj) {
+            if (obj.hasOwnProperty(el)) {
+                sum += obj[el];
+            }
+        }
+        return sum;
+    }
+
     //хелпер суммы
     static sum(...nums: number[]) {
         var i
