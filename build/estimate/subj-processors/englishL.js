@@ -186,36 +186,35 @@ var EnglishL = /** @class */ (function (_super) {
     };
     //@todo параметр ошПлан до конференции считаем равным 1
     EnglishL.prototype.setOshErrors = function () {
-        var _this = this;
         var oshPlanCount = 0;
         var oshHelp = [
             {
                 'code': 'ПРОБЛЕМА',
-                'start': 0,
-                'end': 0,
+                'start': 1000000,
+                'end': 1000000,
             },
             {
                 'code': 'ЛМНЕНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000001,
+                'end': 1000001,
             },
             {
                 'code': 'ПРМНЕНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000002,
+                'end': 1000002,
             },
             {
                 'code': 'ОБОСНОВАНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000003,
+                'end': 1000003,
             },
             {
                 'code': 'ВЫВОД',
-                'start': 0,
-                'end': 0,
+                'start': 1000004,
+                'end': 1000004,
             },
         ];
-        //установим координаты смыслового блока ПРОБЛЕМА
+        //установим координаты смысловых блоков, участвующих в расчёте ОшПлан
         for (var i in this.markUpData.selections) {
             for (var q in oshHelp) {
                 if (oshHelp[q].code === this.markUpData.selections[i].type) {
@@ -227,142 +226,41 @@ var EnglishL = /** @class */ (function (_super) {
         console.log('----------' + JSON.stringify(oshHelp, null, 4));
         var errorsCount = 0;
         oshHelp.forEach(function (item, key, array) {
+            if (array[key].start > 1000000 && array[key].end > 1000000) {
+                errorsCount++;
+                return;
+            }
             // console.log('-------'+array[key+1].start);
             if (key !== array.length - 1) {
-                if (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end) {
+                if ((array[key + 1].start < 100000 && array[key + 1].end < 100000) &&
+                    (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end)) {
+                    console.log('----' + array[key].code);
+                    errorsCount++;
+                }
+                // if (key !== 0) {
+                //     //в случае, если элемент НеНулевой, а перед ним - нулевой, то конкретный надо сравнить с ближайшим (влево), имеющим координаты
+                //     if (array[key].start !== 0 && array[key].end !== 0 && array[key - 1].start !== 0 && array[key - 1].end !== 0) {
+                //         // for (var i = key; i !== 0; i--) {
+                //         //     if (oshHelp[i].start !== 0 && oshHelp[i].end !== 0) {
+                //         //         if (array[key].start > oshHelp[i].start && oshHelp[i].end < array[key].end) {
+                //         //
+                //         //         }
+                //         //     }
+                //         // }
+                //         errorsCount++
+                //     }
+                // }
+                // if (array[key+1].start === 0 && array[key+1].end === 0) {
+                //     errorsCount++
+                // }
+            }
+            else {
+                if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
                     errorsCount++;
                 }
             }
         });
-        // for (let j in oshHelp) {
-        //     console.log(oshHelp[j]);
-        //     if (parseFloat(j) !== oshHelp.length - 1) {
-        //         console.log(oshHelp[parseFloat(j)+1].code);
-        //
-        //         if (oshHelp[parseFloat(j)+1].start < oshHelp[j].start && oshHelp[parseFloat(j)+1].end < oshHelp[j].end) {
-        //
-        //             errorsCount++
-        //         }
-        //     }
-        // }
-        console.log(errorsCount);
-        //запустим проверку на корректность последовательности ПРОБЛЕМА, ЛМНЕНИЕ, ПРМНЕНИЕ, ОБОСНОВАНИЕ, ВЫВОД
-        //ведь, иными словами, положение см. блока в системе - это его координаты
-        // for (let j in oshHelp) {
-        //     if (oshHelp['ПРОБЛЕМА'])
-        //
-        // }
-        return this.oshPlanErrorsCount = 1;
-        var arStartParams = {};
-        var arEndParams = {};
-        for (var i in this.markUpData.selections) {
-            //
-            if (this.markUpData.selections[i].type !== 'ДОВОД') {
-                arStartParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].startSelection;
-                arEndParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].endSelection;
-            }
-            if (this.markUpData.selections[i].type === 'ЛМНЕНИЕ') {
-                this.LMElem = this.markUpData.selections[i];
-            }
-            if (this.markUpData.selections[i].type === 'ПРМНЕНИЕ') {
-                this.PMElem = this.markUpData.selections[i];
-            }
-        }
-        this.setReasonCoordinates();
-        this.calculateReasonErrors(arStartParams, arEndParams);
-        // console.log(this.firstClose);
-        // console.log(this.endClose);
-        // console.log('----------------');
-        // console.log(arStartParams);
-        // console.log('-------end------');
-        // console.log(arEndParams);
-        // console.log('----------------');
-        var arStrStandard = [];
-        var arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ'];
-        for (var i in this.markUpData.selections) {
-            if (arStrMarkUp.includes(this.markUpData.selections[i].type)) {
-                arStrStandard.push(this.markUpData.selections[i].type);
-            }
-        }
-        //считаем разницу в массивах смысловых блоков
-        var difference = arStrMarkUp.filter(function (x) { return !arStrStandard.includes(x); });
-        this.oshPlanErrorsCount = this.oshPlanErrorsCount + difference.length;
-        // console.log(difference.length);
-        arStrStandard.forEach(function (item, key, array) {
-            if (item !== arStrMarkUp[key]) {
-                _this.oshPlanErrorsCount++;
-                // console.log('----- элемент - ' + item + '   не на своем месте');
-            }
-        });
-        // console.log(this.oshPlanErrorsCount);
-    };
-    EnglishL.prototype.setReasonCoordinates = function () {
-        var l = 0;
-        var q = 0;
-        for (var j in this.markUpData.selections) {
-            if (this.markUpData.selections[j].type === 'ДОВОД') {
-                if (this.markUpData.selections[j].tag === this.LMElem.tag) {
-                    this.arReason[l] = {
-                        id: l,
-                        start: this.markUpData.selections[j].startSelection,
-                        end: this.markUpData.selections[j].endSelection,
-                    };
-                    l++;
-                }
-                if (this.markUpData.selections[j].tag === this.PMElem.tag) {
-                    this.arPReason[q] = {
-                        id: q,
-                        start: this.markUpData.selections[j].startSelection,
-                        end: this.markUpData.selections[j].endSelection,
-                    };
-                    q++;
-                }
-            }
-        }
-    };
-    EnglishL.prototype.calculateReasonErrors = function (arStartParams, arEndParams) {
-        //если доводов нет - запишем в ошибки ошПлан
-        if (this.arReason.length === 0) {
-            this.oshPlanErrorsCount++;
-        }
-        else {
-            for (var k in this.arReason) {
-                // console.log('ключ');
-                // console.log(k);
-                //1й довод должен следовать аккурат за ЛМНЕНИЕ-м
-                this.firstClose = this.findTheClosest(arStartParams, this.arReason[k].start);
-                this.endClose = this.findTheClosest(arEndParams, this.arReason[k].end);
-                //в случае, если ближайшее совпадение вниз не соответствует ЛМНЕНИЮ - записываем в ошибки
-                if (this.LMElem.startSelection !== this.firstClose && this.PMElem.endSelection !== this.endClose) {
-                    this.oshPlanErrorsCount++;
-                }
-                // console.log(k);
-            }
-        }
-        if (this.arPReason.length === 0) {
-            this.oshPlanErrorsCount++;
-        }
-        else {
-            for (var f in this.arPReason) {
-                //1й довод должен следовать аккурат за ПРМНЕНИЕ-м
-                this.firstPClose = this.findTheClosest(arStartParams, this.arPReason[f].start);
-                this.endPClose = this.findTheClosest(arEndParams, this.arPReason[f].end);
-                //в случае, если ближайшее совпадение вниз не соответствует ПРМНЕНИЕ - записываем в ошибки
-                if (this.LMElem.startSelection !== this.firstPClose && this.LMElem.endSelection !== this.endPClose) {
-                    this.oshPlanErrorsCount++;
-                }
-                // console.log(f);
-            }
-        }
-    };
-    EnglishL.prototype.findTheClosest = function (arr, base) {
-        var theClosest = null;
-        for (var i in arr) {
-            if (arr[i] <= base && (theClosest == null || (base - arr[i]) < (base - theClosest))) {
-                theClosest = arr[i];
-            }
-        }
-        return theClosest;
+        console.log('oshErrorsCount - ' + errorsCount);
     };
     return EnglishL;
 }(abstractProcessor_1.AbstractProcessor));

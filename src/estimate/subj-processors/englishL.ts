@@ -178,35 +178,35 @@ export class EnglishL extends AbstractProcessor {
     setOshErrors() {
         let oshPlanCount: number = 0
 
-        let oshHelp: {code: string, start: number, end: number}[] = [
+        let oshHelp: { code: string, start: number, end: number }[] = [
             {
                 'code': 'ПРОБЛЕМА',
-                'start': 0,
-                'end': 0,
+                'start': 1000000,
+                'end': 1000000,
             },
             {
                 'code': 'ЛМНЕНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000001,
+                'end': 1000001,
             },
             {
                 'code': 'ПРМНЕНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000002,
+                'end': 1000002,
             },
-             {
+            {
                 'code': 'ОБОСНОВАНИЕ',
-                'start': 0,
-                'end': 0,
+                'start': 1000003,
+                'end': 1000003,
             },
             {
                 'code': 'ВЫВОД',
-                'start': 0,
-                'end': 0,
+                'start': 1000004,
+                'end': 1000004,
             },
         ]
 
-        //установим координаты смыслового блока ПРОБЛЕМА
+        //установим координаты смысловых блоков, участвующих в расчёте ОшПлан
         for (let i in this.markUpData.selections) {
             for (let q in oshHelp) {
                 if (oshHelp[q].code === this.markUpData.selections[i].type) {
@@ -217,169 +217,33 @@ export class EnglishL extends AbstractProcessor {
         }
 
 
-        console.log('----------'+JSON.stringify(oshHelp, null, 4));
+        console.log('----------' + JSON.stringify(oshHelp, null, 4));
 
         let errorsCount: number = 0
 
 
         oshHelp.forEach(function (item, key, array) {
-            // console.log('-------'+array[key+1].start);
+            if (array[key].start > 1000000 && array[key].end > 1000000) {
+                errorsCount++
+                return
+            }
+
             if (key !== array.length - 1) {
-                if (array[key].start > array[key+1].start && array[key+1].end < array[key].end) {
+                if (
+                    (array[key + 1].start < 100000 && array[key + 1].end < 100000) &&
+                    (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end)
+                ) {
+                    errorsCount++
+                }
+
+            } else {
+                //для последнего элемента установим факт обнуления предыдущего = последний элемент не на своем месте
+                if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
                     errorsCount++
                 }
             }
         })
 
-        // for (let j in oshHelp) {
-        //     console.log(oshHelp[j]);
-        //     if (parseFloat(j) !== oshHelp.length - 1) {
-        //         console.log(oshHelp[parseFloat(j)+1].code);
-        //
-        //         if (oshHelp[parseFloat(j)+1].start < oshHelp[j].start && oshHelp[parseFloat(j)+1].end < oshHelp[j].end) {
-        //
-        //             errorsCount++
-        //         }
-        //     }
-        // }
-
-        console.log(errorsCount);
-        //запустим проверку на корректность последовательности ПРОБЛЕМА, ЛМНЕНИЕ, ПРМНЕНИЕ, ОБОСНОВАНИЕ, ВЫВОД
-        //ведь, иными словами, положение см. блока в системе - это его координаты
-        // for (let j in oshHelp) {
-        //     if (oshHelp['ПРОБЛЕМА'])
-        //
-        // }
-
-
-        return this.oshPlanErrorsCount = 1
-        let arStartParams: { [key: string]: number } = {}
-        let arEndParams: { [key: string]: number } = {}
-
-        for (let i in this.markUpData.selections) {
-            //
-            if (this.markUpData.selections[i].type !== 'ДОВОД') {
-                arStartParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].startSelection
-                arEndParams[this.markUpData.selections[i].type] = this.markUpData.selections[i].endSelection
-            }
-
-            if (this.markUpData.selections[i].type === 'ЛМНЕНИЕ') {
-                this.LMElem = this.markUpData.selections[i]
-            }
-
-            if (this.markUpData.selections[i].type === 'ПРМНЕНИЕ') {
-                this.PMElem = this.markUpData.selections[i]
-            }
-        }
-
-        this.setReasonCoordinates()
-        this.calculateReasonErrors(arStartParams, arEndParams)
-
-
-        // console.log(this.firstClose);
-        // console.log(this.endClose);
-        // console.log('----------------');
-        // console.log(arStartParams);
-        // console.log('-------end------');
-        // console.log(arEndParams);
-        // console.log('----------------');
-
-        let arStrStandard: string[] = []
-        let arStrMarkUp = ['ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ВЫВОД', 'ОБОСНОВАНИЕ']
-
-        for (let i in this.markUpData.selections) {
-            if (arStrMarkUp.includes(this.markUpData.selections[i].type)) {
-                arStrStandard.push(this.markUpData.selections[i].type)
-            }
-        }
-
-        //считаем разницу в массивах смысловых блоков
-        let difference = arStrMarkUp.filter(x => !arStrStandard.includes(x));
-        this.oshPlanErrorsCount = this.oshPlanErrorsCount + difference.length
-        // console.log(difference.length);
-
-        arStrStandard.forEach((item, key, array) => {
-            if (item !== arStrMarkUp[key]) {
-                this.oshPlanErrorsCount++
-                // console.log('----- элемент - ' + item + '   не на своем месте');
-            }
-        })
-
-        // console.log(this.oshPlanErrorsCount);
-    }
-
-    setReasonCoordinates(): void {
-        let l = 0
-        let q = 0
-        for (let j in this.markUpData.selections) {
-            if (this.markUpData.selections[j].type === 'ДОВОД') {
-                if (this.markUpData.selections[j].tag === this.LMElem.tag) {
-                    this.arReason[l] = {
-                        id: l,
-                        start: this.markUpData.selections[j].startSelection,
-                        end: this.markUpData.selections[j].endSelection,
-                    }
-                    l++
-                }
-
-                if (this.markUpData.selections[j].tag === this.PMElem.tag) {
-                    this.arPReason[q] = {
-                        id: q,
-                        start: this.markUpData.selections[j].startSelection,
-                        end: this.markUpData.selections[j].endSelection,
-                    }
-                    q++
-                }
-            }
-        }
-    }
-
-    calculateReasonErrors(arStartParams: any, arEndParams: any): void {
-        //если доводов нет - запишем в ошибки ошПлан
-        if (this.arReason.length === 0) {
-            this.oshPlanErrorsCount++
-        } else {
-            for (let k in this.arReason) {
-                // console.log('ключ');
-                // console.log(k);
-                //1й довод должен следовать аккурат за ЛМНЕНИЕ-м
-                this.firstClose = this.findTheClosest(arStartParams, this.arReason[k].start)
-                this.endClose = this.findTheClosest(arEndParams, this.arReason[k].end)
-
-                //в случае, если ближайшее совпадение вниз не соответствует ЛМНЕНИЮ - записываем в ошибки
-                if (this.LMElem.startSelection !== this.firstClose && this.PMElem.endSelection !== this.endClose) {
-                    this.oshPlanErrorsCount++
-                }
-                // console.log(k);
-            }
-        }
-
-        if (this.arPReason.length === 0) {
-            this.oshPlanErrorsCount++
-        } else {
-            for (let f in this.arPReason) {
-                //1й довод должен следовать аккурат за ПРМНЕНИЕ-м
-                this.firstPClose = this.findTheClosest(arStartParams, this.arPReason[f].start)
-                this.endPClose = this.findTheClosest(arEndParams, this.arPReason[f].end)
-
-                //в случае, если ближайшее совпадение вниз не соответствует ПРМНЕНИЕ - записываем в ошибки
-                if (this.LMElem.startSelection !== this.firstPClose && this.LMElem.endSelection !== this.endPClose) {
-                    this.oshPlanErrorsCount++
-                }
-                // console.log(f);
-            }
-        }
-    }
-
-    findTheClosest(arr: { [key: string]: number }, base: number) {
-        let theClosest = null
-
-        for (let i in arr) {
-            if (arr[i] <= base && (theClosest == null || (base - arr[i]) < (base - theClosest))) {
-                theClosest = arr[i]
-            }
-        }
-
-        return theClosest
+        console.log('oshErrorsCount - ' + errorsCount);
     }
 }

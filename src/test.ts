@@ -209,8 +209,8 @@ const markUpExample = {
     selections: [
         {
         id: 219,
-        startSelection: 0,
-        endSelection: 17,
+        startSelection: 30,
+        endSelection: 40,
         type: 'ПРОБЛЕМА',
         comment: 'Комментарий',
         explanation: 'Пояснение',
@@ -222,9 +222,21 @@ const markUpExample = {
 
         {
             id: 220,
-            startSelection: 10,
-            endSelection: 20,
+            startSelection: 25,
+            endSelection: 35,
             type: 'ЛМНЕНИЕ',
+            comment: 'Комментарий',
+            explanation: 'Пояснение',
+            correction: 'Исправление',
+            tag: 'Тег',
+            group: 'meaning',
+            subtype: ''
+        },
+        {
+            id: 220,
+            startSelection: 35,
+            endSelection: 43,
+            type: 'ВЫВОД',
             comment: 'Комментарий',
             explanation: 'Пояснение',
             correction: 'Исправление',
