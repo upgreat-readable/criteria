@@ -17,15 +17,6 @@ export class EnglishL extends AbstractProcessor {
         'А.грамм', 'А.повтор', 'А.уровень', 'А.несоотв',
         'А.орф', 'А.пункт']
 
-    LMElem: any
-    PMElem: any
-    firstPClose: number | null = 0
-    firstClose: number | null = 0
-    endClose: number | null = 0
-    endPClose: number | null = 0
-    arReason: any = []
-    arPReason: any = []
-
     oshPlanErrorsCount: number = 0
 
 
@@ -174,10 +165,7 @@ export class EnglishL extends AbstractProcessor {
         return param1 + param2 + param3 + param4
     }
 
-    //@todo параметр ошПлан до конференции считаем равным 1
     setOshErrors() {
-        let oshPlanCount: number = 0
-
         let oshHelp: { code: string, start: number, end: number }[] = [
             {
                 'code': 'ПРОБЛЕМА',
@@ -216,18 +204,15 @@ export class EnglishL extends AbstractProcessor {
             }
         }
 
-
-        console.log('----------' + JSON.stringify(oshHelp, null, 4));
-
         let errorsCount: number = 0
-
-
         oshHelp.forEach(function (item, key, array) {
+            //для отсутствующих элементов просто увеличиваем число ошибок
             if (array[key].start > 1000000 && array[key].end > 1000000) {
                 errorsCount++
                 return
             }
 
+            //для элементов посреди ряда - проверяем на обнуление следующий и высчитываем положение
             if (key !== array.length - 1) {
                 if (
                     (array[key + 1].start < 100000 && array[key + 1].end < 100000) &&
@@ -244,6 +229,6 @@ export class EnglishL extends AbstractProcessor {
             }
         })
 
-        console.log('oshErrorsCount - ' + errorsCount);
+        this.oshPlanErrorsCount = errorsCount
     }
 }

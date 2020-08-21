@@ -34,12 +34,6 @@ var EnglishL = /** @class */ (function (_super) {
             'А.грамм', 'А.повтор', 'А.уровень', 'А.несоотв',
             'А.орф', 'А.пункт'
         ];
-        _this.firstPClose = 0;
-        _this.firstClose = 0;
-        _this.endClose = 0;
-        _this.endPClose = 0;
-        _this.arReason = [];
-        _this.arPReason = [];
         _this.oshPlanErrorsCount = 0;
         return _this;
     }
@@ -184,9 +178,7 @@ var EnglishL = /** @class */ (function (_super) {
         var param4 = this.formattedEr['ОБОСНОВАНИЕ'] === 0 ? 1 : 0;
         return param1 + param2 + param3 + param4;
     };
-    //@todo параметр ошПлан до конференции считаем равным 1
     EnglishL.prototype.setOshErrors = function () {
-        var oshPlanCount = 0;
         var oshHelp = [
             {
                 'code': 'ПРОБЛЕМА',
@@ -223,44 +215,28 @@ var EnglishL = /** @class */ (function (_super) {
                 }
             }
         }
-        console.log('----------' + JSON.stringify(oshHelp, null, 4));
         var errorsCount = 0;
         oshHelp.forEach(function (item, key, array) {
+            //для отсутствующих элементов просто увеличиваем число ошибок
             if (array[key].start > 1000000 && array[key].end > 1000000) {
                 errorsCount++;
                 return;
             }
-            // console.log('-------'+array[key+1].start);
+            //для элементов посреди ряда - проверяем на обнуление следующий и высчитываем положение
             if (key !== array.length - 1) {
                 if ((array[key + 1].start < 100000 && array[key + 1].end < 100000) &&
                     (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end)) {
-                    console.log('----' + array[key].code);
                     errorsCount++;
                 }
-                // if (key !== 0) {
-                //     //в случае, если элемент НеНулевой, а перед ним - нулевой, то конкретный надо сравнить с ближайшим (влево), имеющим координаты
-                //     if (array[key].start !== 0 && array[key].end !== 0 && array[key - 1].start !== 0 && array[key - 1].end !== 0) {
-                //         // for (var i = key; i !== 0; i--) {
-                //         //     if (oshHelp[i].start !== 0 && oshHelp[i].end !== 0) {
-                //         //         if (array[key].start > oshHelp[i].start && oshHelp[i].end < array[key].end) {
-                //         //
-                //         //         }
-                //         //     }
-                //         // }
-                //         errorsCount++
-                //     }
-                // }
-                // if (array[key+1].start === 0 && array[key+1].end === 0) {
-                //     errorsCount++
-                // }
             }
             else {
+                //для последнего элемента установим факт обнуления предыдущего = последний элемент не на своем месте
                 if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
                     errorsCount++;
                 }
             }
         });
-        console.log('oshErrorsCount - ' + errorsCount);
+        this.oshPlanErrorsCount = errorsCount;
     };
     return EnglishL;
 }(abstractProcessor_1.AbstractProcessor));
