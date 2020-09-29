@@ -48,7 +48,7 @@ var AbstractProcessor = /** @class */ (function () {
         var factualMistakes = 0;
         //этические ошибки
         var ethicalMistakes = 0;
-        console.log(result);
+        // console.log(result);
         for (var key in result) {
             if (key.match(/^Г\./)) {
                 grammaticalMistakes++;

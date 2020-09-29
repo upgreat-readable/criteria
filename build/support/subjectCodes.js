@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.englishLanguage = exports.history = exports.socialScience = exports.literature = exports.russianLanguage = void 0;
+exports.englishLanguageFree = exports.englishLanguage = exports.history = exports.socialScience = exports.literature = exports.russianLanguageFree = exports.russianLanguage = void 0;
 exports.russianLanguage = 'rus';
+exports.russianLanguageFree = 'rus-free';
 exports.literature = 'lit';
-exports.socialScience = 'soc';
-exports.history = 'his';
+exports.socialScience = 'social';
+exports.history = 'hist';
 exports.englishLanguage = 'eng';
+exports.englishLanguageFree = 'eng-free';

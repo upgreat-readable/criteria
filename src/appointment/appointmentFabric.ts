@@ -32,6 +32,7 @@ export class AppointmentFabric {
 
         switch (subj) {
             case subjCodes.russianLanguage:
+            case subjCodes.russianLanguageFree:
                 return new RussianL(this.firstMarkUp, this.secondMarkUp)
             case subjCodes.literature:
                 return new Literature(this.firstMarkUp, this.secondMarkUp)
@@ -40,6 +41,7 @@ export class AppointmentFabric {
             case subjCodes.history:
                 return new History(this.firstMarkUp, this.secondMarkUp)
             case subjCodes.englishLanguage:
+            case subjCodes.englishLanguageFree:
                 return new EnglishL(this.firstMarkUp, this.secondMarkUp)
         }
         throw new Error('Данный предмет не поддерживается сервисом распознавания критериев.')

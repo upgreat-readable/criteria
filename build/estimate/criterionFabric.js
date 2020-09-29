@@ -41,6 +41,7 @@ var CriterionFabric = /** @class */ (function () {
         }
         switch (subj) {
             case subjCodes.russianLanguage:
+            case subjCodes.russianLanguageFree:
                 return new russianL_1.RussianL(this.markUpExample);
             case subjCodes.literature:
                 return new literature_1.Literature(this.markUpExample);
@@ -49,6 +50,7 @@ var CriterionFabric = /** @class */ (function () {
             case subjCodes.history:
                 return new history_1.History(this.markUpExample);
             case subjCodes.englishLanguage:
+            case subjCodes.englishLanguageFree:
                 return new englishL_1.EnglishL(this.markUpExample);
         }
         throw new Error('Данный предмет не поддерживается сервисом распознавания критериев.');

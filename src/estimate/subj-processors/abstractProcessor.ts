@@ -61,7 +61,7 @@ export abstract class AbstractProcessor {
         //этические ошибки
         let ethicalMistakes: number = 0
 
-        console.log(result);
+        // console.log(result);
 
         for (let key in result) {
             if (key.match(/^Г\./)) {

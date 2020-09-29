@@ -30,6 +30,7 @@ export class CriterionFabric implements iCriterion.ICriterionFabric
 
         switch (subj) {
             case subjCodes.russianLanguage:
+            case subjCodes.russianLanguageFree:
                 return new RussianL(this.markUpExample)
             case subjCodes.literature:
                 return new Literature(this.markUpExample)
@@ -38,6 +39,7 @@ export class CriterionFabric implements iCriterion.ICriterionFabric
             case subjCodes.history:
                 return new History(this.markUpExample)
             case subjCodes.englishLanguage:
+            case subjCodes.englishLanguageFree:
                 return new EnglishL(this.markUpExample)
         }
 
