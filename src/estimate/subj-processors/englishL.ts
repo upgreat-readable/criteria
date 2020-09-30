@@ -74,7 +74,7 @@ export class EnglishL extends AbstractProcessor {
         let oshAspects = this.setOshAspects()
         let unproductivePercent = this.setUnproductivePercent()
 
-        if (this.formattedEr['А.объем'] || unproductivePercent > 30) {
+        if (this.wordsCount < 180 || unproductivePercent > 30) {
             this.criterions.K1 = 0
         } else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
             this.criterions.K1 = 3

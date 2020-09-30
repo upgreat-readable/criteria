@@ -85,7 +85,8 @@ var EnglishL = /** @class */ (function (_super) {
     EnglishL.prototype.setK1 = function () {
         var oshAspects = this.setOshAspects();
         var unproductivePercent = this.setUnproductivePercent();
-        if (this.formattedEr['А.объем'] || unproductivePercent > 30) {
+        console.log('count words' + this.wordsCount);
+        if (this.wordsCount < 180 || unproductivePercent > 30) {
             this.criterions.K1 = 0;
         }
         else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
