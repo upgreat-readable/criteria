@@ -127,10 +127,10 @@ export class History extends AbstractProcessor {
     setK2(): void {
 
         let sum1 = Operations.sum(this.roles[0].elems['И.личность'], this.roles[0].elems['И.лсвязь'], this.roles[0].elems['И.лпериод'], this.roles[0].elems['И.лроль'], this.roles[0].elems['И.лдейств'])
-        let factor1 = Operations.compare(sum1, 0, '>')
+        let factor1 = sum1 > 0 ? 1: 0
 
         let sum2 = Operations.sum(this.roles[1].elems['И.личность'], this.roles[1].elems['И.лсвязь'], this.roles[1].elems['И.лпериод'], this.roles[1].elems['И.лроль'], this.roles[1].elems['И.лдейств'])
-        let factor2 = Operations.compare(sum2, 0, '>')
+        let factor2 = sum2 > 0 ? 1: 0
 
 
         let person1 = Operations.diff(this.roles[0].count, factor1)
@@ -142,19 +142,27 @@ export class History extends AbstractProcessor {
     //@todo оптимизировать через foreach определение двух параметров в ряду
     setK3(): void {
         let param1: number
-        Operations.compare(this.reasonConsequence[0].reason, 0, '>') && Operations.compare(this.reasonConsequence[0].consequence, 0, '>') ? param1 = 1 : param1 = 0
+        if (this.reasonConsequence[0].reason > 0 && this.reasonConsequence[0].consequence > 0) {
+            param1 = 1
+        } else {
+            param1 = 0
+        }
 
         let sumToParam2 = Operations.sum(this.reasonConsequence[0].elems['И.причин'], this.reasonConsequence[0].elems['И.следств'])
-        let param2 = Operations.compare(sumToParam2, 0, '>')
+        let param2 = sumToParam2 > 0 ? 1 : 0
 
         let pss1 = param1 + param2
 
 
         let param3: number
-        Operations.compare(this.reasonConsequence[1].reason, 0, '>') && Operations.compare(this.reasonConsequence[1].consequence, 0, '>') ? param3 = 1 : param3 = 0
+        if (this.reasonConsequence[1].reason > 0 && this.reasonConsequence[1].consequence > 0) {
+            param3 = 1
+        } else {
+            param3 = 0
+        }
 
         let sumToParam4 = Operations.sum(this.reasonConsequence[1].elems['И.причин'], this.reasonConsequence[1].elems['И.следств'])
-        let param4 = Operations.compare(sumToParam4, 0, '>')
+        let param4 = sumToParam4 > 0 ? 1 : 0
 
         let pss2 = param3 + param4
 
@@ -162,17 +170,17 @@ export class History extends AbstractProcessor {
     }
 
     setK4(): void {
-        let rating = Operations.compare(this.formattedEr['ОЦЕНКА'], 0, '>')
+        let rating = this.formattedEr['ОЦЕНКА'] > 0 ? 1 : 0
 
         let sumToParam2 = Operations.sum(this.formattedEr['И.влиян'], this.formattedEr['И.упрощ'])
-        let param2 = Operations.compare(sumToParam2, 0, '>')
+        let param2 = sumToParam2 > 0 ? 1 : 0
 
         this.criterions.K4 = Operations.diff(rating, param2)
     }
 
     setK5(): void {
         let sumToParam = Operations.sum(this.formattedEr['И.понятие'], this.formattedEr['И.неиспол'])
-        let param = Operations.compare(sumToParam, 0, '>')
+        let param = sumToParam > 0 ? 1 : 0
 
         this.criterions.K5 = Operations.diff(1, param)
     }
@@ -185,7 +193,7 @@ export class History extends AbstractProcessor {
         if (Operations.sum(this.criterions.K1, this.criterions.K2, this.criterions.K3, this.criterions.K4) < 5) {
             this.criterions.K7 = 0
         } else {
-            let param1 = Operations.compare(this.formattedEr['И.излож'], 0, '=')
+            let param1 = this.formattedEr['И.излож'] === 0 ? 1 : 0
             let param2 = Operations.sum(this.criterions.K1, this.criterions.K2, this.criterions.K3, this.criterions.K4) >= 5
              if (param1 && param2) {
                  this.criterions.K7 = 1

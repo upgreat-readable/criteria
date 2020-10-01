@@ -134,9 +134,9 @@ var History = /** @class */ (function (_super) {
     //@todo оптимизировать через foreach определение двух параметров в ряду
     History.prototype.setK2 = function () {
         var sum1 = operations_1.Operations.sum(this.roles[0].elems['И.личность'], this.roles[0].elems['И.лсвязь'], this.roles[0].elems['И.лпериод'], this.roles[0].elems['И.лроль'], this.roles[0].elems['И.лдейств']);
-        var factor1 = operations_1.Operations.compare(sum1, 0, '>');
+        var factor1 = sum1 > 0 ? 1 : 0;
         var sum2 = operations_1.Operations.sum(this.roles[1].elems['И.личность'], this.roles[1].elems['И.лсвязь'], this.roles[1].elems['И.лпериод'], this.roles[1].elems['И.лроль'], this.roles[1].elems['И.лдейств']);
-        var factor2 = operations_1.Operations.compare(sum2, 0, '>');
+        var factor2 = sum2 > 0 ? 1 : 0;
         var person1 = operations_1.Operations.diff(this.roles[0].count, factor1);
         var person2 = operations_1.Operations.diff(this.roles[1].count, factor2);
         this.criterions.K2 = operations_1.Operations.sum(person1, person2);
@@ -144,26 +144,36 @@ var History = /** @class */ (function (_super) {
     //@todo оптимизировать через foreach определение двух параметров в ряду
     History.prototype.setK3 = function () {
         var param1;
-        operations_1.Operations.compare(this.reasonConsequence[0].reason, 0, '>') && operations_1.Operations.compare(this.reasonConsequence[0].consequence, 0, '>') ? param1 = 1 : param1 = 0;
+        if (this.reasonConsequence[0].reason > 0 && this.reasonConsequence[0].consequence > 0) {
+            param1 = 1;
+        }
+        else {
+            param1 = 0;
+        }
         var sumToParam2 = operations_1.Operations.sum(this.reasonConsequence[0].elems['И.причин'], this.reasonConsequence[0].elems['И.следств']);
-        var param2 = operations_1.Operations.compare(sumToParam2, 0, '>');
+        var param2 = sumToParam2 > 0 ? 1 : 0;
         var pss1 = param1 + param2;
         var param3;
-        operations_1.Operations.compare(this.reasonConsequence[1].reason, 0, '>') && operations_1.Operations.compare(this.reasonConsequence[1].consequence, 0, '>') ? param3 = 1 : param3 = 0;
+        if (this.reasonConsequence[1].reason > 0 && this.reasonConsequence[1].consequence > 0) {
+            param3 = 1;
+        }
+        else {
+            param3 = 0;
+        }
         var sumToParam4 = operations_1.Operations.sum(this.reasonConsequence[1].elems['И.причин'], this.reasonConsequence[1].elems['И.следств']);
-        var param4 = operations_1.Operations.compare(sumToParam4, 0, '>');
+        var param4 = sumToParam4 > 0 ? 1 : 0;
         var pss2 = param3 + param4;
         this.criterions.K3 = pss1 + pss2;
     };
     History.prototype.setK4 = function () {
-        var rating = operations_1.Operations.compare(this.formattedEr['ОЦЕНКА'], 0, '>');
+        var rating = this.formattedEr['ОЦЕНКА'] > 0 ? 1 : 0;
         var sumToParam2 = operations_1.Operations.sum(this.formattedEr['И.влиян'], this.formattedEr['И.упрощ']);
-        var param2 = operations_1.Operations.compare(sumToParam2, 0, '>');
+        var param2 = sumToParam2 > 0 ? 1 : 0;
         this.criterions.K4 = operations_1.Operations.diff(rating, param2);
     };
     History.prototype.setK5 = function () {
         var sumToParam = operations_1.Operations.sum(this.formattedEr['И.понятие'], this.formattedEr['И.неиспол']);
-        var param = operations_1.Operations.compare(sumToParam, 0, '>');
+        var param = sumToParam > 0 ? 1 : 0;
         this.criterions.K5 = operations_1.Operations.diff(1, param);
     };
     History.prototype.setK6 = function () {
@@ -174,7 +184,7 @@ var History = /** @class */ (function (_super) {
             this.criterions.K7 = 0;
         }
         else {
-            var param1 = operations_1.Operations.compare(this.formattedEr['И.излож'], 0, '=');
+            var param1 = this.formattedEr['И.излож'] === 0 ? 1 : 0;
             var param2 = operations_1.Operations.sum(this.criterions.K1, this.criterions.K2, this.criterions.K3, this.criterions.K4) >= 5;
             if (param1 && param2) {
                 this.criterions.K7 = 1;

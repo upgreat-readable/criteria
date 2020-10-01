@@ -85,7 +85,6 @@ var EnglishL = /** @class */ (function (_super) {
     EnglishL.prototype.setK1 = function () {
         var oshAspects = this.setOshAspects();
         var unproductivePercent = this.setUnproductivePercent();
-        console.log('count words' + this.wordsCount);
         if (this.wordsCount < 180 || unproductivePercent > 30) {
             this.criterions.K1 = 0;
         }

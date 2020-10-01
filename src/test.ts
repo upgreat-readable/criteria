@@ -24,163 +24,69 @@ const markUpExample = {
     criterias: {},
     selections: [
         {
-            id: 100,
-            startSelection: 100,
-            endSelection: 148,
-            type: 'Г.слов',
+            id: 138,
+            startSelection: 138,
+            endSelection: 145,
+            type: 'А.грамм',
             comment: '',
-            explanation: '',
-            correction: '',
-            tag: '',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 160,
-            startSelection: 149,
-            endSelection: 196,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: '',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 219,
-            startSelection: 197,
-            endSelection: 232,
-            type: 'Г.слов',
-            comment: 'Комментарий',
-            explanation: 'Пояснение',
-            correction: 'Исправление',
-            tag: 'Тег',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 306,
-            startSelection: 233,
-            endSelection: 314,
-            type: 'Г.слов',
-            comment: 'Комментарий',
-            explanation: 'Пояснение',
-            correction: 'Исправление',
-            tag: 'Тег',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 440,
-            startSelection: 315,
-            endSelection: 366,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: '',
-            group: 'meaning',
-            subtype: 'словообр'
-        },
-        {
-            id: 512,
-            startSelection: 367,
-            endSelection: 405,
-            type: 'ИСП',
-            comment: '',
-            explanation: '',
-            correction: 'моё справление',
-            tag: '',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 575,
-            startSelection: 406,
-            endSelection: -1,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: '',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 743,
-            startSelection: 0,
-            endSelection: 0,
-            type: 'П.однообр',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: '',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 758,
-            startSelection: 563,
-            endSelection: 607,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: 'ег',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 819,
-            startSelection: 608,
-            endSelection: 652,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
-            correction: '',
-            tag: 'ег',
-            group: 'meaning',
-            subtype: ''
-        },
-        {
-            id: 880,
-            startSelection: 653,
-            endSelection: 696,
-            type: 'Г.слов',
-            comment: '',
-            explanation: '',
+            explanation: 'Форма множественного числа',
             correction: '',
             tag: '',
             group: 'error',
-            subtype: ''
+            subtype: 'множ'
         },
         {
-            id: 935,
-            startSelection: 697,
-            endSelection: 754,
-            type: 'ПРОБЛЕМА',
+            id: 480,
+            startSelection: 435,
+            endSelection: 483,
+            type: 'А.стиль',
             comment: '',
-            explanation: '',
-            correction: 'моё исправление',
+            explanation: 'Стилистическая ошибка. Риторический вопрос.',
+            correction: '',
             tag: '',
             group: 'error',
-            subtype: ''
+            subtype: 'ритор'
         },
         {
-            id: 957,
-            startSelection: 708,
-            endSelection: 720,
-            type: 'Г.слов',
-            comment: 'мой комментарий',
-            explanation: '',
+            id: 592,
+            startSelection: 484,
+            endSelection: 610,
+            type: 'ЛМНЕНИЕ',
+            comment: '',
+            explanation: 'Личное мнение. Автор не приводит свое мнение, а дает рекомендации , что делать .',
             correction: '',
             tag: '',
             group: 'meaning',
+            subtype: ''
+        },
+        {
+            id: 867,
+            startSelection: 665,
+            endSelection: 673,
+            type: 'А.грамм',
+            comment: '',
+            explanation: 'Видовременная форма глагола',
+            correction: '',
+            tag: '',
+            group: 'error',
+            subtype: 'видовр'
+        },
+        {
+            id: 1062,
+            startSelection: 812,
+            endSelection: 816,
+            type: 'А.логика',
+            comment: '',
+            explanation: 'Логическая ошибка',
+            correction: '',
+            tag: '',
+            group: 'error',
             subtype: ''
         }
     ],
-    text: "Подтип ошибки или комментарий кратко объясняет учащемуся суть ошибки. Для каждого типа ошибок в классификаторе предусмотрено несколько подтипов. Каждому подтипу соответствует свой стандартный комментарий (то есть подтип ошибки – это, по сути, аббревиатура для стандартного комментария). Если эксперт считает, что ни один из стандартных комментариев не подходит для данного случая, то он может записать свой комментарий. Текст комментария должен быть лаконичным и называть типовую ошибку, встречающуюся во многих работах. Комментарий не должен обращаться к тексту данной работы."
+    text: "As we all know, right now the world is locked down in an attempt to fight the new corona virus. All of us must stay at home, avoid social contact and thus, try to stop the spread of the virus. However, for many of us it is not as easy as it might sound. Constant staying indoors, learning all these new methods of studying online and never having any fun gatherings, can bring quite a lot of stress or even depression to young people. How can students overcome this difficult period?\\n' +\n" +
+        "    'First of all, we have to remember that this is temporary. One day the lockdown will be over and we will go outside fearlessly. Secondly, we should not perceive this time as wasted. There is plenty of things that we can do at home to spend the time productively: learning new skills, physical exercise, reading, catching up with your studying, doing crafts, looking after yourself, cooking delicious food, watching your favorite series, making renovations to your house, learning languages. The secret of staying positive is staying busy. Fill this time with things you love doing. Finally, now that we cannot see our friends, we can use this time to realize how important they are to us.\\n' +\n" +
+        "    'All in all, I believe that we should make the most out of this time, believing that it will be over some day and we will be able to start our lives afresh."
 };
 
 let y = new CriterionFabric(markUpExample).run()
