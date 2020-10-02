@@ -56,7 +56,6 @@ export class RussianL extends AbstractProcessor {
      */
     analyze(): object {
         super.analyze()
-        console.log(this.formattedEr);
 
         if (this.wordsCount < constants.russianWordsLowLimit) {
             return this.criterions

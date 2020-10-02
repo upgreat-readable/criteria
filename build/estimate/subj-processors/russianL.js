@@ -94,7 +94,6 @@ var RussianL = /** @class */ (function (_super) {
      */
     RussianL.prototype.analyze = function () {
         _super.prototype.analyze.call(this);
-        console.log(this.formattedEr);
         if (this.wordsCount < constants.russianWordsLowLimit) {
             return this.criterions;
         }

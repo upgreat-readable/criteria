@@ -22,19 +22,18 @@ const markUpExample = {
         expert: 'exp001'
     },
     criterias: {},
-    selections: [
-        {
-            id: 138,
-            startSelection: 138,
-            endSelection: 145,
-            type: 'А.грамм',
-            comment: '',
-            explanation: 'Форма множественного числа',
-            correction: '',
-            tag: '',
-            group: 'error',
-            subtype: 'множ'
-        },
+    selections: [    {
+        id: 138,
+        startSelection: 138,
+        endSelection: 145,
+        type: 'А.грамм',
+        comment: '',
+        explanation: 'Форма множественного числа',
+        correction: '',
+        tag: '',
+        group: 'error',
+        subtype: 'множ'
+    },
         {
             id: 480,
             startSelection: 435,
@@ -82,15 +81,37 @@ const markUpExample = {
             tag: '',
             group: 'error',
             subtype: ''
-        }
-    ],
-    text: "As we all know, right now the world is locked down in an attempt to fight the new corona virus. All of us must stay at home, avoid social contact and thus, try to stop the spread of the virus. However, for many of us it is not as easy as it might sound. Constant staying indoors, learning all these new methods of studying online and never having any fun gatherings, can bring quite a lot of stress or even depression to young people. How can students overcome this difficult period?\\n' +\n" +
-        "    'First of all, we have to remember that this is temporary. One day the lockdown will be over and we will go outside fearlessly. Secondly, we should not perceive this time as wasted. There is plenty of things that we can do at home to spend the time productively: learning new skills, physical exercise, reading, catching up with your studying, doing crafts, looking after yourself, cooking delicious food, watching your favorite series, making renovations to your house, learning languages. The secret of staying positive is staying busy. Fill this time with things you love doing. Finally, now that we cannot see our friends, we can use this time to realize how important they are to us.\\n' +\n" +
-        "    'All in all, I believe that we should make the most out of this time, believing that it will be over some day and we will be able to start our lives afresh."
+        },
+        {
+            id: 1062,
+            startSelection: 812,
+            endSelection: 816,
+            type: 'П.отнош',
+            comment: '',
+            explanation: 'Логическая ошибка',
+            correction: '',
+            tag: '',
+            group: 'error',
+            subtype: ''
+        },
+        {
+            id: 1062,
+            startSelection: 812,
+            endSelection: 816,
+            type: 'ОТНОШЕНИЕ',
+            comment: '',
+            explanation: 'Логическая ошибка',
+            correction: '',
+            tag: '',
+            group: 'error',
+            subtype: ''
+        },
+        ],
+    text: "Мама мыла раму."
 };
 
 let y = new CriterionFabric(markUpExample).run()
-console.log(y);
+console.log(y.wordsCount);
 console.log(Operations.objectSum(y));
 
 // let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()

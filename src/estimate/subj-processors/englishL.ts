@@ -56,6 +56,7 @@ export class EnglishL extends AbstractProcessor {
         this.setOshErrors()
 
         super.analyze()
+
         this.setK1()
 
         if (this.criterions.K1 === 0) {

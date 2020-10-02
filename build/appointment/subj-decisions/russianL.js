@@ -21,7 +21,7 @@ var RussianL = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     RussianL.prototype.decide = function () {
-        this.checkCriterionExists(['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8']);
+        this.checkCriterionExists(['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8', 'K9', 'K10', 'K11', 'K12']);
         //расхождение итоговых оценок К двух экспертов составляет 7 или более баллов
         if (Math.abs(this.firstCritSum - this.secondCritSum) >= 8) {
             this.decisionResult.decision = true;
