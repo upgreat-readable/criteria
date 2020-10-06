@@ -21,7 +21,7 @@ const markUpExample = {
         test: 'егэ тренировка',
         expert: 'exp001'
     },
-    criterias: {},
+    criteria: {},
     selections: [    {
         id: 138,
         startSelection: 138,

@@ -13,8 +13,8 @@ export abstract class abstractDecision
     decisionResult: thrdExpertDecision = {decision: false}
 
     constructor(firstFile: MarkUpData, secondFile: MarkUpData) {
-        this.firstFileCriterions = firstFile.criterias
-        this.secondFileCriterions = secondFile.criterias
+        this.firstFileCriterions = firstFile.criteria
+        this.secondFileCriterions = secondFile.criteria
 
         this.calculateSum()
     }

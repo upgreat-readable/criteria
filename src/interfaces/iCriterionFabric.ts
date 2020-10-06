@@ -16,7 +16,7 @@ export type MarkUpData = {
         theme: string,
         taskText: string
     },
-    criterias: {
+    criteria: {
         [key: string]: number
     },
     selections: [

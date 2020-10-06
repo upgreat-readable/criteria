@@ -7,8 +7,8 @@ var abstractDecision = /** @class */ (function () {
         this.secondCritSum = 0;
         //false - де-юре третий эксперт не нужен
         this.decisionResult = { decision: false };
-        this.firstFileCriterions = firstFile.criterias;
-        this.secondFileCriterions = secondFile.criterias;
+        this.firstFileCriterions = firstFile.criteria;
+        this.secondFileCriterions = secondFile.criteria;
         this.calculateSum();
     }
     abstractDecision.prototype.calculateSum = function () {
