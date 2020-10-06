@@ -109,7 +109,7 @@ var markUpExample = {
     text: "Мама мыла раму."
 };
 var y = new criterionFabric_1.CriterionFabric(markUpExample).run();
-console.log(y.wordsCount);
+console.log(y);
 console.log(operations_1.Operations.objectSum(y));
 // let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()
 // console.log(x);

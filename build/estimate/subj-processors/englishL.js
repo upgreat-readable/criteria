@@ -20,7 +20,7 @@ var EnglishL = /** @class */ (function (_super) {
     __extends(EnglishL, _super);
     function EnglishL() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.criterions = {
+        _this.criteria = {
             K1: 0,
             K2: 0,
             K3: 0,
@@ -73,87 +73,87 @@ var EnglishL = /** @class */ (function (_super) {
         this.setOshErrors();
         _super.prototype.analyze.call(this);
         this.setK1();
-        if (this.criterions.K1 === 0) {
-            return this.criterions;
+        if (this.criteria.K1 === 0) {
+            return this.criteria;
         }
         this.setK2();
         this.setK3();
         this.setK4();
         this.setK5();
-        return this.criterions;
+        return this.criteria;
     };
     EnglishL.prototype.setK1 = function () {
         var oshAspects = this.setOshAspects();
         var unproductivePercent = this.setUnproductivePercent();
         if (this.wordsCount < 180 || unproductivePercent > 30) {
-            this.criterions.K1 = 0;
+            this.criteria.K1 = 0;
         }
         else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
-            this.criterions.K1 = 3;
+            this.criteria.K1 = 3;
         }
         else if (oshAspects === 0 && this.formattedEr['А.аспект'] <= 2 && this.formattedEr['А.стиль'] <= 3) {
-            this.criterions.K1 = 2;
+            this.criteria.K1 = 2;
         }
         else if ((oshAspects * 2 + this.formattedEr['А.аспект']) <= 4 && this.formattedEr['А.стиль'] <= 4) {
-            this.criterions.K1 = 1;
+            this.criteria.K1 = 1;
         }
         else {
-            this.criterions.K1 = 0;
+            this.criteria.K1 = 0;
         }
     };
     EnglishL.prototype.setK2 = function () {
         if (this.oshPlanErrorsCount === 0 && this.formattedEr['А.логика'] === 0 &&
             this.formattedEr['А.нсвязь'] === 0 && this.formattedEr['А.связь'] === 0 && this.formattedEr['А.абзац'] === 0) {
-            this.criterions.K2 = 3;
+            this.criteria.K2 = 3;
         }
         else if (operations_1.Operations.sum(this.oshPlanErrorsCount, this.formattedEr['А.логика'], this.formattedEr['А.нсвязь'], this.formattedEr['А.абзац']) <= 4 &&
             this.formattedEr['А.связь'] === 0) {
-            this.criterions.K2 = 2;
+            this.criteria.K2 = 2;
         }
         else if (operations_1.Operations.sum(this.oshPlanErrorsCount, this.formattedEr['А.логика'], this.formattedEr['А.связь'], this.formattedEr['А.абзац']) <= 8) {
-            this.criterions.K2 = 1;
+            this.criteria.K2 = 1;
         }
         else {
-            this.criterions.K2 = 0;
+            this.criteria.K2 = 0;
         }
     };
     EnglishL.prototype.setK3 = function () {
         if (this.formattedEr['А.лексика'] <= 1 && this.formattedEr['А.запас'] === 0) {
-            this.criterions.K3 = 3;
+            this.criteria.K3 = 3;
         }
         else if ((this.formattedEr['А.лексика'] + 3 * this.formattedEr['А.запас']) <= 3) {
-            this.criterions.K3 = 2;
+            this.criteria.K3 = 2;
         }
         else if (this.formattedEr['А.лексика'] <= 4 && this.formattedEr['А.запас'] <= 1) {
-            this.criterions.K3 = 1;
+            this.criteria.K3 = 1;
         }
         else {
-            this.criterions.K3 = 0;
+            this.criteria.K3 = 0;
         }
     };
     EnglishL.prototype.setK4 = function () {
         if (this.formattedEr['А.грамм'] <= 2 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] === 0) {
-            this.criterions.K4 = 3;
+            this.criteria.K4 = 3;
         }
         else if (this.formattedEr['А.грамм'] <= 4 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] === 0) {
-            this.criterions.K4 = 2;
+            this.criteria.K4 = 2;
         }
         else if (this.formattedEr['А.грамм'] <= 7 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] <= 1) {
-            this.criterions.K4 = 1;
+            this.criteria.K4 = 1;
         }
         else {
-            this.criterions.K4 = 0;
+            this.criteria.K4 = 0;
         }
     };
     EnglishL.prototype.setK5 = function () {
         if (this.formattedEr['А.орф'] <= 1 && this.formattedEr['А.пункт'] <= 1) {
-            this.criterions.K5 = 2;
+            this.criteria.K5 = 2;
         }
         else if ((this.formattedEr['А.орф'] + this.formattedEr['А.пункт']) <= 4) {
-            this.criterions.K5 = 1;
+            this.criteria.K5 = 1;
         }
         else {
-            this.criterions.K5 = 0;
+            this.criteria.K5 = 0;
         }
     };
     EnglishL.prototype.setUnproductivePercent = function () {

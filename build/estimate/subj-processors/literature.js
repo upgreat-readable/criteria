@@ -41,7 +41,7 @@ var Literature = /** @class */ (function (_super) {
     __extends(Literature, _super);
     function Literature() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.criterions = {
+        _this.criteria = {
             K1: 0,
             K2: 0,
             K3: 0,
@@ -81,73 +81,73 @@ var Literature = /** @class */ (function (_super) {
     Literature.prototype.analyze = function () {
         _super.prototype.analyze.call(this);
         if (this.wordsCount < constants.literatureWordsLowLimit) {
-            return this.criterions;
+            return this.criteria;
         }
         this.setK1();
         this.setK2();
         this.setK3();
         this.setK4();
         this.setK5();
-        if (operations_1.Operations.objectSum(this.criterions) > constants_1.literatureMaxPoints) {
+        if (operations_1.Operations.objectSum(this.criteria) > constants_1.literatureMaxPoints) {
             throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
         }
-        return this.criterions;
+        return this.criteria;
     };
     Literature.prototype.setK1 = function () {
         if (this.formattedEr['С.тема'] > 0) {
-            this.criterions.K1 = 0;
+            this.criteria.K1 = 0;
         }
         else if (this.formattedEr['С.поверхн'] > 0) {
-            this.criterions.K1 = 1;
+            this.criteria.K1 = 1;
         }
         else if (this.formattedEr['С.одностор'] > 0) {
-            this.criterions.K1 = 2;
+            this.criteria.K1 = 2;
         }
         else {
-            this.criterions.K1 = 3;
+            this.criteria.K1 = 3;
         }
     };
     Literature.prototype.setK2 = function () {
         if (this.formattedEr['АРГУМЕНТ'] === 0 || this.formattedEr['С.опора'] > 0 || this.formattedEr['С.позиция'] > 0 || this.formattedEr['С.факт'] >= 4) {
-            this.criterions.K2 = 0;
+            this.criteria.K2 = 0;
         }
         else if (this.formattedEr['С.упрощен'] > 0 || this.formattedEr['С.пересказ'] > 0 || this.formattedEr['С.факт'] >= 3) {
-            this.criterions.K2 = 1;
+            this.criteria.K2 = 1;
         }
         else if (this.formattedEr['С.факт'] >= 2) {
-            this.criterions.K2 = 2;
+            this.criteria.K2 = 2;
         }
         else if (this.formattedEr['С.факт'] === 0) {
-            this.criterions.K2 = 3;
+            this.criteria.K2 = 3;
         }
     };
     Literature.prototype.setK3 = function () {
         if (this.formattedEr['ПОНЯТИЕ'] === 0 || this.formattedEr['С.понятие'] >= 2) {
-            this.criterions.K3 = 0;
+            this.criteria.K3 = 0;
         }
         else if (this.formattedEr['С.неиспол'] > 0 || this.formattedEr['С.понятие'] >= 1) {
-            this.criterions.K3 = 1;
+            this.criteria.K3 = 1;
         }
         else {
-            this.criterions.K3 = 2;
+            this.criteria.K3 = 2;
         }
     };
     Literature.prototype.setK4 = function () {
         if (this.formattedEr['С.композ'] > 0) {
-            this.criterions.K4 = 0;
+            this.criteria.K4 = 0;
         }
         else if (this.formattedEr['С.неразв'] > 0 || this.formattedEr['С.связь'] > 0) {
-            this.criterions.K4 = 1;
+            this.criteria.K4 = 1;
         }
         else if (this.formattedEr['С.послед'] > 0) {
-            this.criterions.K4 = 2;
+            this.criteria.K4 = 2;
         }
         else {
-            this.criterions.K4 = 3;
+            this.criteria.K4 = 3;
         }
     };
     Literature.prototype.setK5 = function () {
-        this.criterions.K5 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошРеч']));
+        this.criteria.K5 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошРеч']));
     };
     return Literature;
 }(abstractProcessor_1.AbstractProcessor));

@@ -21,7 +21,7 @@ var SocialScience = /** @class */ (function (_super) {
     __extends(SocialScience, _super);
     function SocialScience() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.criterions = {
+        _this.criteria = {
             K1: 0,
             K2: 0,
             K3: 0,
@@ -48,42 +48,42 @@ var SocialScience = /** @class */ (function (_super) {
     SocialScience.prototype.analyze = function () {
         _super.prototype.analyze.call(this);
         this.setK1();
-        if (this.criterions.K1 === 0) {
-            return this.criterions;
+        if (this.criteria.K1 === 0) {
+            return this.criteria;
         }
         this.setK2();
         this.setK3();
         this.setK4();
-        if (operations_1.Operations.objectSum(this.criterions) > constants_1.socScienceMaxPoints) {
+        if (operations_1.Operations.objectSum(this.criteria) > constants_1.socScienceMaxPoints) {
             throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.');
         }
-        return this.criterions;
+        return this.criteria;
     };
     SocialScience.prototype.setK1 = function () {
         if (this.formattedEr['ИДЕЯ'] > 0 && this.formattedEr['о.смысл'] === 0 && this.formattedEr['о.подмена'] === 0 && this.formattedEr['о.пересказ'] === 0) {
-            this.criterions.K1 = 1;
+            this.criteria.K1 = 1;
         }
     };
     SocialScience.prototype.setK2 = function () {
         if (this.formattedEr['о.упрощ'] > 0) {
-            this.criterions.K2 = 0;
+            this.criteria.K2 = 0;
         }
         else {
             var conceptFlag = this.formattedEr['ПОНЯТИЕ'] > 0 ? 1 : 0;
             var theoryFlag = this.formattedEr['ТЕОРИЯ'] > 0 ? 1 : 0;
             var sumFlag = (this.formattedEr['о.понятие'] + this.formattedEr['о.теория']) > 0 ? 1 : 0;
-            this.criterions.K2 = Math.max(0, (conceptFlag + theoryFlag - sumFlag - this.formattedEr['о.теорсвязь'] - this.formattedEr['о.нехватает']));
+            this.criteria.K2 = Math.max(0, (conceptFlag + theoryFlag - sumFlag - this.formattedEr['о.теорсвязь'] - this.formattedEr['о.нехватает']));
         }
     };
     SocialScience.prototype.setK3 = function () {
         var logicFlag = this.formattedEr['ЛОГИКА'] > 0 ? 1 : 0;
-        this.criterions.K3 = Math.max(0, (logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод']));
+        this.criteria.K3 = Math.max(0, (logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод']));
     };
     SocialScience.prototype.setK4 = function () {
         var exSoc = this.formattedEr['ПРИМЕР.ОБЩ'] > 1 ? 1 : 0;
         var exPerson = this.formattedEr['ПРИМЕР.ЛИЧ'] > 1 ? 1 : 0;
         var exHist = this.formattedEr['ПРИМЕР.ИСТ'] > 1 ? 1 : 0;
-        this.criterions.K4 = Math.max(0, Math.min(2, exSoc + exPerson + exHist) - this.formattedEr['о.примсвязь'] - this.formattedEr['о.подтв']
+        this.criteria.K4 = Math.max(0, Math.min(2, exSoc + exPerson + exHist) - this.formattedEr['о.примсвязь'] - this.formattedEr['о.подтв']
             - this.formattedEr['о.дубл'] - this.formattedEr['о.факт'] - this.formattedEr['о.подробн']);
     };
     return SocialScience;

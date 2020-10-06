@@ -111,7 +111,7 @@ const markUpExample = {
 };
 
 let y = new CriterionFabric(markUpExample).run()
-console.log(y.wordsCount);
+console.log(y);
 console.log(Operations.objectSum(y));
 
 // let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()

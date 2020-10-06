@@ -3,7 +3,7 @@ import * as constants from "../../support/constants";
 import {Operations} from "../../support/operations";
 import {russianMaxPoints} from "../../support/constants";
 export class RussianL extends AbstractProcessor {
-    criterions = {
+    criteria = {
         K1: 0,
         K2: 0,
         K3: 0,
@@ -58,13 +58,13 @@ export class RussianL extends AbstractProcessor {
         super.analyze()
 
         if (this.wordsCount < constants.russianWordsLowLimit) {
-            return this.criterions
+            return this.criteria
         }
 
         this.shortTextFlag = this.wordsCount < constants.russianShortTextCount ? 1 : 0
 
         this.setK1()
-        if (this.criterions.K1 !== 0) {
+        if (this.criteria.K1 !== 0) {
             this.setK2()
             this.setK3()
             this.setK4()
@@ -79,91 +79,91 @@ export class RussianL extends AbstractProcessor {
 
         this.setK6()
 
-        if (Operations.objectSum(this.criterions) > russianMaxPoints) {
+        if (Operations.objectSum(this.criteria) > russianMaxPoints) {
             throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
         }
 
-        return this.criterions
+        return this.criteria
     }
 
     setK1 () : void {
         if (this.formattedEr['ПРОБЛЕМА'] > 0 && this.formattedEr['П.проблема'] === 0 && this.formattedEr['П.факт'] === 0) {
-            this.criterions.K1 = 1
+            this.criteria.K1 = 1
         }
     }
 
     setK2 () : void {
         if (this.formattedEr['П.опора'] + this.formattedEr['П.пересказ'] + this.formattedEr['П.факткомм'] + this.formattedEr['П.другая'] + this.formattedEr['П.копир'] > 0) {
-            this.criterions.K2 = 0
+            this.criteria.K2 = 0
         } else if (this.formattedEr['ПРИМЕР'] >= 2 && this.formattedEr['ПОЯСНЕНИЕ'] >= 2 && this.formattedEr['СВЯЗЬ'] >= 1) {
-            this.criterions.K2 = 5
+            this.criteria.K2 = 5
         } else if (this.formattedEr['ПРИМЕР'] >= 2 && (this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ']) >= 2) {
-            this.criterions.K2 = 4
+            this.criteria.K2 = 4
         } else if (this.formattedEr['ПРИМЕР'] + this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ'] >= 3) {
-            this.criterions.K2 = 3
+            this.criteria.K2 = 3
         } else if (this.formattedEr['ПРИМЕР'] === 2) {
-            this.criterions.K2 = 2
+            this.criteria.K2 = 2
         } else if (this.formattedEr['ПРИМЕР'] === 1) {
-            this.criterions.K2 = 1
+            this.criteria.K2 = 1
         } else {
-            this.criterions.K2 = 0
+            this.criteria.K2 = 0
         }
     }
 
     setK3 () : void {
         if (this.formattedEr['ПРИМЕР'] > 0 && this.formattedEr['П.позиция'] === 0) {
-            this.criterions.K3 = 1
+            this.criteria.K3 = 1
         } else {
-            this.criterions.K3 = 0
+            this.criteria.K3 = 0
         }
     }
 
     setK4 () : void {
         if (this.formattedEr['ОТНОШЕНИЕ'] > 0 && (this.formattedEr['П.отнош'] + this.formattedEr['П.обоснов'] === 0)) {
-            this.criterions.K4 = 1
+            this.criteria.K4 = 1
         } else {
-            this.criterions.K4 = 0
+            this.criteria.K4 = 0
         }
     }
 
     setK5 () : void {
-        this.criterions.K5 = Math.max(2 - this.formattedEr['ошЛог'], 0)
+        this.criteria.K5 = Math.max(2 - this.formattedEr['ошЛог'], 0)
     }
 
     setK6 () : void {
-        if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 0 && this.criterions.K10 >= 2) {
-            this.criterions.K6 = 2
-        } else if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 1 || this.criterions.K10 < 2) {
-            this.criterions.K6 = 1
+        if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 0 && this.criteria.K10 >= 2) {
+            this.criteria.K6 = 2
+        } else if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 1 || this.criteria.K10 < 2) {
+            this.criteria.K6 = 1
         } else {
-            this.criterions.K6 = 0
+            this.criteria.K6 = 0
         }
     }
 
     setK7 () : void {
-        // this.criterions.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
-        this.criterions.K7 = 3
+        // this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
+        this.criteria.K7 = 3
     }
 
     setK8 () : void {
-        // this.criterions.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
-        this.criterions.K8 = 3.5
+        // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+        this.criteria.K8 = 3.5
     }
 
     setK9 () : void {
-        this.criterions.K9 = Math.max(0, Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag))
+        this.criteria.K9 = Math.max(0, Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag))
     }
 
     setK10 () : void {
-        this.criterions.K10 = Math.max(0, Math.floor(2.5 - 0.5 * this.formattedEr['ошРеч'] - this.shortTextFlag))
+        this.criteria.K10 = Math.max(0, Math.floor(2.5 - 0.5 * this.formattedEr['ошРеч'] - this.shortTextFlag))
     }
 
     setK11 () : void {
-        this.criterions.K11 = this.formattedEr['ошЭтич'] === 0 ? 1 : 0
+        this.criteria.K11 = this.formattedEr['ошЭтич'] === 0 ? 1 : 0
     }
 
     setK12 () : void {
-        this.criterions.K12 = this.formattedEr['ошФакт'] === 0 ? 1 : 0
+        this.criteria.K12 = this.formattedEr['ошФакт'] === 0 ? 1 : 0
     }
 }
 

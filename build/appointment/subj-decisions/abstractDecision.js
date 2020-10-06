@@ -19,9 +19,9 @@ var abstractDecision = /** @class */ (function () {
             this.secondCritSum = this.secondCritSum + this.secondFileCriterions[j];
         }
     };
-    abstractDecision.prototype.checkCriterionExists = function (criterions) {
+    abstractDecision.prototype.checkCriterionExists = function (criteria) {
         var _this = this;
-        criterions.forEach(function (item, key, array) {
+        criteria.forEach(function (item, key, array) {
             if (!_this.firstFileCriterions.hasOwnProperty(item) || !_this.secondFileCriterions.hasOwnProperty(item)) {
                 throw new Error('Критерий ' + item + ' не существует в полученной разметке');
             }

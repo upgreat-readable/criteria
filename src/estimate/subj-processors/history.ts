@@ -3,7 +3,7 @@ import {Operations} from "../../support/operations";
 import {historyMaxPoints} from "../../support/constants";
 
 export class History extends AbstractProcessor {
-    criterions = {
+    criteria = {
         K1: 0,
         K2: 0,
         K3: 0,
@@ -101,8 +101,8 @@ export class History extends AbstractProcessor {
 
         this.setK1()
 
-        if (this.criterions.K1 === 0) {
-            return this.criterions
+        if (this.criteria.K1 === 0) {
+            return this.criteria
         }
 
         this.setK2()
@@ -112,15 +112,15 @@ export class History extends AbstractProcessor {
         this.setK6()
         this.setK7()
 
-        if (Operations.objectSum(this.criterions) > historyMaxPoints) {
+        if (Operations.objectSum(this.criteria) > historyMaxPoints) {
             throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
         }
 
-        return this.criterions
+        return this.criteria
     }
 
     setK1(): void {
-        this.criterions.K1 = Math.max(0, Math.min(2, Operations.diff(this.formattedEr['СЯП'], this.formattedEr['И.сяп'], this.formattedEr['И.период'])))
+        this.criteria.K1 = Math.max(0, Math.min(2, Operations.diff(this.formattedEr['СЯП'], this.formattedEr['И.сяп'], this.formattedEr['И.период'])))
     }
 
     //@todo оптимизировать через foreach определение двух параметров в ряду
@@ -136,7 +136,7 @@ export class History extends AbstractProcessor {
         let person1 = Operations.diff(this.roles[0].count, factor1)
         let person2 = Operations.diff(this.roles[1].count, factor2)
 
-        this.criterions.K2 = Operations.sum(person1, person2)
+        this.criteria.K2 = Operations.sum(person1, person2)
     }
 
     //@todo оптимизировать через foreach определение двух параметров в ряду
@@ -166,7 +166,7 @@ export class History extends AbstractProcessor {
 
         let pss2 = param3 + param4
 
-        this.criterions.K3 = pss1 + pss2
+        this.criteria.K3 = pss1 + pss2
     }
 
     setK4(): void {
@@ -175,30 +175,30 @@ export class History extends AbstractProcessor {
         let sumToParam2 = Operations.sum(this.formattedEr['И.влиян'], this.formattedEr['И.упрощ'])
         let param2 = sumToParam2 > 0 ? 1 : 0
 
-        this.criterions.K4 = Operations.diff(rating, param2)
+        this.criteria.K4 = Operations.diff(rating, param2)
     }
 
     setK5(): void {
         let sumToParam = Operations.sum(this.formattedEr['И.понятие'], this.formattedEr['И.неиспол'])
         let param = sumToParam > 0 ? 1 : 0
 
-        this.criterions.K5 = Operations.diff(1, param)
+        this.criteria.K5 = Operations.diff(1, param)
     }
 
     setK6(): void {
-        this.criterions.K6 = Math.max(0, 3 - this.formattedEr['И.факт'])
+        this.criteria.K6 = Math.max(0, 3 - this.formattedEr['И.факт'])
     }
 
     setK7(): void {
-        if (Operations.sum(this.criterions.K1, this.criterions.K2, this.criterions.K3, this.criterions.K4) < 5) {
-            this.criterions.K7 = 0
+        if (Operations.sum(this.criteria.K1, this.criteria.K2, this.criteria.K3, this.criteria.K4) < 5) {
+            this.criteria.K7 = 0
         } else {
             let param1 = this.formattedEr['И.излож'] === 0 ? 1 : 0
-            let param2 = Operations.sum(this.criterions.K1, this.criterions.K2, this.criterions.K3, this.criterions.K4) >= 5
+            let param2 = Operations.sum(this.criteria.K1, this.criteria.K2, this.criteria.K3, this.criteria.K4) >= 5
              if (param1 && param2) {
-                 this.criterions.K7 = 1
+                 this.criteria.K7 = 1
              } else {
-                 this.criterions.K7 = 0
+                 this.criteria.K7 = 0
              }
         }
     }

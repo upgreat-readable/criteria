@@ -29,8 +29,8 @@ export abstract class abstractDecision
         }
     }
 
-    checkCriterionExists(criterions: string[]): void {
-        criterions.forEach((item, key, array) => {
+    checkCriterionExists(criteria: string[]): void {
+        criteria.forEach((item, key, array) => {
             if (!this.firstFileCriterions.hasOwnProperty(item) || !this.secondFileCriterions.hasOwnProperty(item))  {
                 throw new Error('Критерий ' + item + ' не существует в полученной разметке')
             }

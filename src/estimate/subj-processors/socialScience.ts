@@ -3,7 +3,7 @@ import {Operations} from "../../support/operations";
 import {socScienceMaxPoints} from "../../support/constants";
 
 export class SocialScience extends AbstractProcessor {
-    criterions = {
+    criteria = {
         K1: 0,
         K2: 0,
         K3: 0,
@@ -34,42 +34,42 @@ export class SocialScience extends AbstractProcessor {
         this.setK1()
 
 
-        if (this.criterions.K1 === 0) {
-            return this.criterions
+        if (this.criteria.K1 === 0) {
+            return this.criteria
         }
 
         this.setK2()
         this.setK3()
         this.setK4()
 
-        if (Operations.objectSum(this.criterions) > socScienceMaxPoints) {
+        if (Operations.objectSum(this.criteria) > socScienceMaxPoints) {
             throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
         }
 
-        return this.criterions
+        return this.criteria
     }
 
     setK1(): void {
         if (this.formattedEr['ИДЕЯ'] > 0 && this.formattedEr['о.смысл'] === 0 && this.formattedEr['о.подмена'] === 0 && this.formattedEr['о.пересказ'] === 0) {
-            this.criterions.K1 = 1
+            this.criteria.K1 = 1
         }
     }
 
     setK2(): void {
         if (this.formattedEr['о.упрощ'] > 0) {
-            this.criterions.K2 = 0
+            this.criteria.K2 = 0
         } else {
             let conceptFlag = this.formattedEr['ПОНЯТИЕ'] > 0 ? 1 : 0
             let theoryFlag = this.formattedEr['ТЕОРИЯ'] > 0 ? 1 : 0
             let sumFlag = (this.formattedEr['о.понятие'] + this.formattedEr['о.теория']) > 0 ? 1 : 0
 
-            this.criterions.K2 = Math.max(0, (conceptFlag + theoryFlag - sumFlag - this.formattedEr['о.теорсвязь'] - this.formattedEr['о.нехватает']))
+            this.criteria.K2 = Math.max(0, (conceptFlag + theoryFlag - sumFlag - this.formattedEr['о.теорсвязь'] - this.formattedEr['о.нехватает']))
         }
     }
 
     setK3(): void {
         let logicFlag = this.formattedEr['ЛОГИКА'] > 0 ? 1 : 0
-        this.criterions.K3 = Math.max(0, (logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод']))
+        this.criteria.K3 = Math.max(0, (logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод']))
     }
 
     setK4(): void {
@@ -77,7 +77,7 @@ export class SocialScience extends AbstractProcessor {
         let exPerson = this.formattedEr['ПРИМЕР.ЛИЧ'] > 1 ? 1 : 0
         let exHist = this.formattedEr['ПРИМЕР.ИСТ'] > 1 ? 1 : 0
 
-        this.criterions.K4 = Math.max(0, Math.min(2, exSoc + exPerson + exHist) - this.formattedEr['о.примсвязь'] - this.formattedEr['о.подтв']
+        this.criteria.K4 = Math.max(0, Math.min(2, exSoc + exPerson + exHist) - this.formattedEr['о.примсвязь'] - this.formattedEr['о.подтв']
             - this.formattedEr['о.дубл'] - this.formattedEr['о.факт'] - this.formattedEr['о.подробн'])
     }
 }
