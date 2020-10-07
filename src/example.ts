@@ -1,7 +1,5 @@
-import { RussianL } from './estimate/subj-processors/russianL';
 import { CriterionFabric } from './estimate/criterionFabric';
 import { Operations } from './support/operations';
-import { AppointmentFabric } from './appointment/appointmentFabric';
 
 const markUpExample = {
   meta: {
