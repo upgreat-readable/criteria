@@ -1,10 +1,10 @@
 {
-  "name": "@webpractik/readable_io.criterion",
-  "version": "1.0.10",
+  "name": "@upgreat-readable/criteria",
+  "version": "1.0.0",
   "description": "readable criterion package",
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpractik/readable_io.criterion.git"
+    "url": "https://github.com/upgreat-readable/criteria.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
