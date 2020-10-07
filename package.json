@@ -6,9 +6,6 @@
     "type": "git",
     "url": "https://github.com/upgreat-readable/criteria.git"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "author": "",
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
