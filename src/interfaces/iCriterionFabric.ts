@@ -1,36 +1,36 @@
-import {AbstractProcessor} from "../estimate/subj-processors/abstractProcessor";
+import { AbstractProcessor } from '../estimate/subj-processors/abstractProcessor';
 
 export interface ICriterionFabric {
-    decisionCriterionClass(subj: string): AbstractProcessor
-    getSubj(): string
+  decisionCriterionClass(subj: string): AbstractProcessor;
+  getSubj(): string;
 }
 
-export type ArCriterions = {[key: string]: number}
+export type ArCriterions = { [key: string]: number };
 export type MarkUpData = {
-    meta: {
-        subject: string,
-        test: string,
-        category: string,
-        year: number,
-        class: number,
-        theme: string,
-        taskText: string
+  meta: {
+    subject: string;
+    test: string;
+    category: string;
+    year: number;
+    class: number;
+    theme: string;
+    taskText: string;
+  };
+  criteria: {
+    [key: string]: number;
+  };
+  selections: [
+    {
+      id: number;
+      tag: string;
+      type: string;
+      group: 'meaning' | 'error';
+      comment: string;
+      subtype: string;
+      explanation: string;
+      startSelection: number;
+      endSelection: number;
     },
-    criteria: {
-        [key: string]: number
-    },
-    selections: [
-        {
-            id: number,
-            tag: string,
-            type: string,
-            group: 'meaning' | 'error',
-            comment: string,
-            subtype: string,
-            explanation: string,
-            startSelection: number,
-            endSelection: number,
-        }
-    ],
-    text: string
-}
+  ];
+  text: string;
+};

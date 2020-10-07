@@ -1,34 +1,47 @@
-import {AbstractProcessor} from './abstractProcessor';
-import * as constants from "../../support/constants";
-import {Operations} from "../../support/operations";
-import {russianMaxPoints} from "../../support/constants";
+import { AbstractProcessor } from './abstractProcessor';
+import * as constants from '../../support/constants';
+import { Operations } from '../../support/operations';
+import { russianMaxPoints } from '../../support/constants';
 export class RussianL extends AbstractProcessor {
-    criteria = {
-        K1: 0,
-        K2: 0,
-        K3: 0,
-        K4: 0,
-        K5: 0,
-        K6: 0,
-        K7: 0,
-        K8: 0,
-        K9: 0,
-        K10: 0,
-        K11: 0,
-        K12: 0
-    }
+  criteria = {
+    K1: 0,
+    K2: 0,
+    K3: 0,
+    K4: 0,
+    K5: 0,
+    K6: 0,
+    K7: 0,
+    K8: 0,
+    K9: 0,
+    K10: 0,
+    K11: 0,
+    K12: 0,
+  };
 
-    predefinedValues: string[] = [
-        'ПРОБЛЕМА', 'ПРИМЕР', 'ПОЯСНЕНИЕ', 'СВЯЗЬ', 'ПОЗИЦИЯ', 'ОТНОШЕНИЕ',
-        'П.проблема', 'П.факт',
-        'П.опора', 'П.пересказ', 'П.факткомм', 'П.другая', 'П.копир',
-        'П.позиция',
-        'П.отнош', 'П.обоснов',
-        'П.однообр', 'П.точность']
+  predefinedValues: string[] = [
+    'ПРОБЛЕМА',
+    'ПРИМЕР',
+    'ПОЯСНЕНИЕ',
+    'СВЯЗЬ',
+    'ПОЗИЦИЯ',
+    'ОТНОШЕНИЕ',
+    'П.проблема',
+    'П.факт',
+    'П.опора',
+    'П.пересказ',
+    'П.факткомм',
+    'П.другая',
+    'П.копир',
+    'П.позиция',
+    'П.отнош',
+    'П.обоснов',
+    'П.однообр',
+    'П.точность',
+  ];
 
-    shortTextFlag: number = 0
+  shortTextFlag: number = 0;
 
-    /*
+  /*
             если (объём < 70 слов) то K=К1=…=К12=0 и далее оценивание не производится;
             если (ПРОБЛЕМА>0) и (П.проблема=0) и (П.факт=0)  то К1=1;
             иначе К1=К2=К3=К4=0 и переход к вычислению К5–К12;
@@ -54,117 +67,156 @@ export class RussianL extends AbstractProcessor {
             иначе К6=0;
             К = К1 + …. + К12. Максимальное значение К = 24.
      */
-    analyze(): object {
-        super.analyze()
+  analyze(): object {
+    super.analyze();
 
-        if (this.wordsCount < constants.russianWordsLowLimit) {
-            return this.criteria
-        }
-
-        this.shortTextFlag = this.wordsCount < constants.russianShortTextCount ? 1 : 0
-
-        this.setK1()
-        if (this.criteria.K1 !== 0) {
-            this.setK2()
-            this.setK3()
-            this.setK4()
-        }
-        this.setK5()
-        this.setK7()
-        this.setK8()
-        this.setK9()
-        this.setK10()
-        this.setK11()
-        this.setK12()
-
-        this.setK6()
-
-        if (Operations.objectSum(this.criteria) > russianMaxPoints) {
-            throw new Error('Высчитанное количество баллов превысило максимально допустимое значение.')
-        }
-
-        return this.criteria
+    if (this.wordsCount < constants.russianWordsLowLimit) {
+      return this.criteria;
     }
 
-    setK1 () : void {
-        if (this.formattedEr['ПРОБЛЕМА'] > 0 && this.formattedEr['П.проблема'] === 0 && this.formattedEr['П.факт'] === 0) {
-            this.criteria.K1 = 1
-        }
+    this.shortTextFlag =
+      this.wordsCount < constants.russianShortTextCount ? 1 : 0;
+
+    this.setK1();
+    if (this.criteria.K1 !== 0) {
+      this.setK2();
+      this.setK3();
+      this.setK4();
+    }
+    this.setK5();
+    this.setK7();
+    this.setK8();
+    this.setK9();
+    this.setK10();
+    this.setK11();
+    this.setK12();
+
+    this.setK6();
+
+    if (Operations.objectSum(this.criteria) > russianMaxPoints) {
+      throw new Error(
+        'Высчитанное количество баллов превысило максимально допустимое значение.',
+      );
     }
 
-    setK2 () : void {
-        if (this.formattedEr['П.опора'] + this.formattedEr['П.пересказ'] + this.formattedEr['П.факткомм'] + this.formattedEr['П.другая'] + this.formattedEr['П.копир'] > 0) {
-            this.criteria.K2 = 0
-        } else if (this.formattedEr['ПРИМЕР'] >= 2 && this.formattedEr['ПОЯСНЕНИЕ'] >= 2 && this.formattedEr['СВЯЗЬ'] >= 1) {
-            this.criteria.K2 = 5
-        } else if (this.formattedEr['ПРИМЕР'] >= 2 && (this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ']) >= 2) {
-            this.criteria.K2 = 4
-        } else if (this.formattedEr['ПРИМЕР'] + this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ'] >= 3) {
-            this.criteria.K2 = 3
-        } else if (this.formattedEr['ПРИМЕР'] === 2) {
-            this.criteria.K2 = 2
-        } else if (this.formattedEr['ПРИМЕР'] === 1) {
-            this.criteria.K2 = 1
-        } else {
-            this.criteria.K2 = 0
-        }
-    }
+    return this.criteria;
+  }
 
-    setK3 () : void {
-        if (this.formattedEr['ПРИМЕР'] > 0 && this.formattedEr['П.позиция'] === 0) {
-            this.criteria.K3 = 1
-        } else {
-            this.criteria.K3 = 0
-        }
+  setK1(): void {
+    if (
+      this.formattedEr['ПРОБЛЕМА'] > 0 &&
+      this.formattedEr['П.проблема'] === 0 &&
+      this.formattedEr['П.факт'] === 0
+    ) {
+      this.criteria.K1 = 1;
     }
+  }
 
-    setK4 () : void {
-        if (this.formattedEr['ОТНОШЕНИЕ'] > 0 && (this.formattedEr['П.отнош'] + this.formattedEr['П.обоснов'] === 0)) {
-            this.criteria.K4 = 1
-        } else {
-            this.criteria.K4 = 0
-        }
+  setK2(): void {
+    if (
+      this.formattedEr['П.опора'] +
+        this.formattedEr['П.пересказ'] +
+        this.formattedEr['П.факткомм'] +
+        this.formattedEr['П.другая'] +
+        this.formattedEr['П.копир'] >
+      0
+    ) {
+      this.criteria.K2 = 0;
+    } else if (
+      this.formattedEr['ПРИМЕР'] >= 2 &&
+      this.formattedEr['ПОЯСНЕНИЕ'] >= 2 &&
+      this.formattedEr['СВЯЗЬ'] >= 1
+    ) {
+      this.criteria.K2 = 5;
+    } else if (
+      this.formattedEr['ПРИМЕР'] >= 2 &&
+      this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ'] >= 2
+    ) {
+      this.criteria.K2 = 4;
+    } else if (
+      this.formattedEr['ПРИМЕР'] +
+        this.formattedEr['ПОЯСНЕНИЕ'] +
+        this.formattedEr['СВЯЗЬ'] >=
+      3
+    ) {
+      this.criteria.K2 = 3;
+    } else if (this.formattedEr['ПРИМЕР'] === 2) {
+      this.criteria.K2 = 2;
+    } else if (this.formattedEr['ПРИМЕР'] === 1) {
+      this.criteria.K2 = 1;
+    } else {
+      this.criteria.K2 = 0;
     }
+  }
 
-    setK5 () : void {
-        this.criteria.K5 = Math.max(2 - this.formattedEr['ошЛог'], 0)
+  setK3(): void {
+    if (this.formattedEr['ПРИМЕР'] > 0 && this.formattedEr['П.позиция'] === 0) {
+      this.criteria.K3 = 1;
+    } else {
+      this.criteria.K3 = 0;
     }
+  }
 
-    setK6 () : void {
-        if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 0 && this.criteria.K10 >= 2) {
-            this.criteria.K6 = 2
-        } else if (this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 1 || this.criteria.K10 < 2) {
-            this.criteria.K6 = 1
-        } else {
-            this.criteria.K6 = 0
-        }
+  setK4(): void {
+    if (
+      this.formattedEr['ОТНОШЕНИЕ'] > 0 &&
+      this.formattedEr['П.отнош'] + this.formattedEr['П.обоснов'] === 0
+    ) {
+      this.criteria.K4 = 1;
+    } else {
+      this.criteria.K4 = 0;
     }
+  }
 
-    setK7 () : void {
-        // this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
-        this.criteria.K7 = 3
-    }
+  setK5(): void {
+    this.criteria.K5 = Math.max(2 - this.formattedEr['ошЛог'], 0);
+  }
 
-    setK8 () : void {
-        // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
-        this.criteria.K8 = 3.5
+  setK6(): void {
+    if (
+      this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 0 &&
+      this.criteria.K10 >= 2
+    ) {
+      this.criteria.K6 = 2;
+    } else if (
+      this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 1 ||
+      this.criteria.K10 < 2
+    ) {
+      this.criteria.K6 = 1;
+    } else {
+      this.criteria.K6 = 0;
     }
+  }
 
-    setK9 () : void {
-        this.criteria.K9 = Math.max(0, Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag))
-    }
+  setK7(): void {
+    // this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
+    this.criteria.K7 = 3;
+  }
 
-    setK10 () : void {
-        this.criteria.K10 = Math.max(0, Math.floor(2.5 - 0.5 * this.formattedEr['ошРеч'] - this.shortTextFlag))
-    }
+  setK8(): void {
+    // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+    this.criteria.K8 = 3.5;
+  }
 
-    setK11 () : void {
-        this.criteria.K11 = this.formattedEr['ошЭтич'] === 0 ? 1 : 0
-    }
+  setK9(): void {
+    this.criteria.K9 = Math.max(
+      0,
+      Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag),
+    );
+  }
 
-    setK12 () : void {
-        this.criteria.K12 = this.formattedEr['ошФакт'] === 0 ? 1 : 0
-    }
+  setK10(): void {
+    this.criteria.K10 = Math.max(
+      0,
+      Math.floor(2.5 - 0.5 * this.formattedEr['ошРеч'] - this.shortTextFlag),
+    );
+  }
+
+  setK11(): void {
+    this.criteria.K11 = this.formattedEr['ошЭтич'] === 0 ? 1 : 0;
+  }
+
+  setK12(): void {
+    this.criteria.K12 = this.formattedEr['ошФакт'] === 0 ? 1 : 0;
+  }
 }
-
-

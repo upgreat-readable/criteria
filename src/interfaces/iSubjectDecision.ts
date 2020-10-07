@@ -1,7 +1,5 @@
-export interface ISubjectDecision {
-
-}
+export interface ISubjectDecision {}
 
 export type thrdExpertDecision = {
-    decision: boolean
-}
+  decision: boolean;
+};

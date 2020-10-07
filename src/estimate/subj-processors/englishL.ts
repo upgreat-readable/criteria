@@ -1,26 +1,43 @@
-import {AbstractProcessor} from "./abstractProcessor";
-import {Operations} from "../../support/operations";
+import { AbstractProcessor } from './abstractProcessor';
+import { Operations } from '../../support/operations';
 
 export class EnglishL extends AbstractProcessor {
-    criteria = {
-        K1: 0,
-        K2: 0,
-        K3: 0,
-        K4: 0,
-        K5: 0
-    }
+  criteria = {
+    K1: 0,
+    K2: 0,
+    K3: 0,
+    K4: 0,
+    K5: 0,
+  };
 
-    predefinedValues: string[] = [
-        'ПРОБЛЕМА', 'ЛМНЕНИЕ', 'ПРМНЕНИЕ', 'ДОВОД', 'ОБОСНОВАНИЕ', 'ВЫВОД',
-        'А.стиль', 'А.аспект', 'А.объем', 'А.непрод',
-        'А.логика', 'А.нсвязь', 'А.связь', 'А.абзац', 'А.лексика', 'А.запас',
-        'А.грамм', 'А.повтор', 'А.уровень', 'А.несоотв',
-        'А.орф', 'А.пункт']
+  predefinedValues: string[] = [
+    'ПРОБЛЕМА',
+    'ЛМНЕНИЕ',
+    'ПРМНЕНИЕ',
+    'ДОВОД',
+    'ОБОСНОВАНИЕ',
+    'ВЫВОД',
+    'А.стиль',
+    'А.аспект',
+    'А.объем',
+    'А.непрод',
+    'А.логика',
+    'А.нсвязь',
+    'А.связь',
+    'А.абзац',
+    'А.лексика',
+    'А.запас',
+    'А.грамм',
+    'А.повтор',
+    'А.уровень',
+    'А.несоотв',
+    'А.орф',
+    'А.пункт',
+  ];
 
-    oshPlanErrorsCount: number = 0
+  oshPlanErrorsCount: number = 0;
 
-
-    /*
+  /*
 
         ошАспекты = [ЛМНЕНИЕ=0] + [ПРМНЕНИЕ=0] + max(3 – ДОВОД, 0) + [ОБОСНОВАНИЕ=0];
         если (А.объем<200 слов) или (А.непрод>30% слов) то К1 = 0;
@@ -51,185 +68,239 @@ export class EnglishL extends AbstractProcessor {
         иначе К5 = 0;
         итоговая оценка K = К1 + К2 + К3 + К4 + К5  (максимальное значение К=14).
      */
-    analyze(): any {
-        //считаем количество ошПлан
-        this.setOshErrors()
+  analyze(): any {
+    //считаем количество ошПлан
+    this.setOshErrors();
 
-        super.analyze()
+    super.analyze();
 
-        this.setK1()
+    this.setK1();
 
-        if (this.criteria.K1 === 0) {
-            return this.criteria
-        }
-
-        this.setK2()
-        this.setK3()
-        this.setK4()
-        this.setK5()
-
-        return this.criteria
+    if (this.criteria.K1 === 0) {
+      return this.criteria;
     }
 
-    setK1(): void {
-        let oshAspects = this.setOshAspects()
-        let unproductivePercent = this.setUnproductivePercent()
+    this.setK2();
+    this.setK3();
+    this.setK4();
+    this.setK5();
 
-        if (this.wordsCount < 180 || unproductivePercent > 30) {
-            this.criteria.K1 = 0
-        } else if (oshAspects === 0 && this.formattedEr['А.аспект'] === 0 && this.formattedEr['А.стиль'] <= 1) {
-            this.criteria.K1 = 3
-        } else if (oshAspects === 0 && this.formattedEr['А.аспект'] <= 2 && this.formattedEr['А.стиль'] <= 3) {
-            this.criteria.K1 = 2
-        } else if ((oshAspects * 2 + this.formattedEr['А.аспект']) <= 4 && this.formattedEr['А.стиль'] <= 4) {
-            this.criteria.K1 = 1
-        } else {
-            this.criteria.K1 = 0
-        }
+    return this.criteria;
+  }
+
+  setK1(): void {
+    let oshAspects = this.setOshAspects();
+    let unproductivePercent = this.setUnproductivePercent();
+
+    if (this.wordsCount < 180 || unproductivePercent > 30) {
+      this.criteria.K1 = 0;
+    } else if (
+      oshAspects === 0 &&
+      this.formattedEr['А.аспект'] === 0 &&
+      this.formattedEr['А.стиль'] <= 1
+    ) {
+      this.criteria.K1 = 3;
+    } else if (
+      oshAspects === 0 &&
+      this.formattedEr['А.аспект'] <= 2 &&
+      this.formattedEr['А.стиль'] <= 3
+    ) {
+      this.criteria.K1 = 2;
+    } else if (
+      oshAspects * 2 + this.formattedEr['А.аспект'] <= 4 &&
+      this.formattedEr['А.стиль'] <= 4
+    ) {
+      this.criteria.K1 = 1;
+    } else {
+      this.criteria.K1 = 0;
+    }
+  }
+
+  setK2(): void {
+    if (
+      this.oshPlanErrorsCount === 0 &&
+      this.formattedEr['А.логика'] === 0 &&
+      this.formattedEr['А.нсвязь'] === 0 &&
+      this.formattedEr['А.связь'] === 0 &&
+      this.formattedEr['А.абзац'] === 0
+    ) {
+      this.criteria.K2 = 3;
+    } else if (
+      Operations.sum(
+        this.oshPlanErrorsCount,
+        this.formattedEr['А.логика'],
+        this.formattedEr['А.нсвязь'],
+        this.formattedEr['А.абзац'],
+      ) <= 4 &&
+      this.formattedEr['А.связь'] === 0
+    ) {
+      this.criteria.K2 = 2;
+    } else if (
+      Operations.sum(
+        this.oshPlanErrorsCount,
+        this.formattedEr['А.логика'],
+        this.formattedEr['А.связь'],
+        this.formattedEr['А.абзац'],
+      ) <= 8
+    ) {
+      this.criteria.K2 = 1;
+    } else {
+      this.criteria.K2 = 0;
+    }
+  }
+
+  setK3(): void {
+    if (
+      this.formattedEr['А.лексика'] <= 1 &&
+      this.formattedEr['А.запас'] === 0
+    ) {
+      this.criteria.K3 = 3;
+    } else if (
+      this.formattedEr['А.лексика'] + 3 * this.formattedEr['А.запас'] <=
+      3
+    ) {
+      this.criteria.K3 = 2;
+    } else if (
+      this.formattedEr['А.лексика'] <= 4 &&
+      this.formattedEr['А.запас'] <= 1
+    ) {
+      this.criteria.K3 = 1;
+    } else {
+      this.criteria.K3 = 0;
+    }
+  }
+
+  setK4(): void {
+    if (
+      this.formattedEr['А.грамм'] <= 2 &&
+      this.formattedEr['А.уровень'] === 0 &&
+      this.formattedEr['А.несоотв'] === 0
+    ) {
+      this.criteria.K4 = 3;
+    } else if (
+      this.formattedEr['А.грамм'] <= 4 &&
+      this.formattedEr['А.уровень'] === 0 &&
+      this.formattedEr['А.несоотв'] === 0
+    ) {
+      this.criteria.K4 = 2;
+    } else if (
+      this.formattedEr['А.грамм'] <= 7 &&
+      this.formattedEr['А.уровень'] === 0 &&
+      this.formattedEr['А.несоотв'] <= 1
+    ) {
+      this.criteria.K4 = 1;
+    } else {
+      this.criteria.K4 = 0;
+    }
+  }
+
+  setK5(): void {
+    if (this.formattedEr['А.орф'] <= 1 && this.formattedEr['А.пункт'] <= 1) {
+      this.criteria.K5 = 2;
+    } else if (this.formattedEr['А.орф'] + this.formattedEr['А.пункт'] <= 4) {
+      this.criteria.K5 = 1;
+    } else {
+      this.criteria.K5 = 0;
+    }
+  }
+
+  setUnproductivePercent(): number {
+    let resultPercent: number = 0;
+    let upProdWordsCount: number = 0;
+    let totalWordsCount: number = Operations.countWords(this.markUpData.text);
+    for (let i in this.markUpData.selections) {
+      if (this.markUpData.selections[i].type === 'А.непрод') {
+        upProdWordsCount += Operations.countWords(
+          this.markUpData.text.substring(
+            this.markUpData.selections[i].startSelection,
+            this.markUpData.selections[i].endSelection,
+          ),
+        );
+      }
     }
 
-    setK2(): void {
-        if (this.oshPlanErrorsCount === 0 && this.formattedEr['А.логика'] === 0 &&
-            this.formattedEr['А.нсвязь'] === 0 && this.formattedEr['А.связь'] === 0 && this.formattedEr['А.абзац'] === 0) {
-            this.criteria.K2 = 3
-        } else if (Operations.sum(this.oshPlanErrorsCount, this.formattedEr['А.логика'], this.formattedEr['А.нсвязь'], this.formattedEr['А.абзац']) <= 4 &&
-            this.formattedEr['А.связь'] === 0) {
-            this.criteria.K2 = 2
-        } else if (Operations.sum(this.oshPlanErrorsCount, this.formattedEr['А.логика'], this.formattedEr['А.связь'], this.formattedEr['А.абзац']) <= 8) {
-            this.criteria.K2 = 1
-        } else {
-            this.criteria.K2 = 0
-        }
+    if (upProdWordsCount !== 0) {
+      resultPercent = (upProdWordsCount / totalWordsCount) * 100;
+      return Math.round(resultPercent);
     }
 
-    setK3(): void {
-        if (this.formattedEr['А.лексика'] <= 1 && this.formattedEr['А.запас'] === 0) {
-            this.criteria.K3 = 3
-        } else if ((this.formattedEr['А.лексика'] + 3 * this.formattedEr['А.запас']) <= 3) {
-            this.criteria.K3 = 2
-        } else if (this.formattedEr['А.лексика'] <= 4 && this.formattedEr['А.запас'] <= 1) {
-            this.criteria.K3 = 1
-        } else {
-            this.criteria.K3 = 0
+    return resultPercent;
+  }
+
+  setOshAspects(): number {
+    let param1 = this.formattedEr['ЛМНЕНИЕ'] === 0 ? 1 : 0;
+    let param2 = this.formattedEr['ПРМНЕНИЕ'] === 0 ? 1 : 0;
+    let param3 = Math.max(3 - this.formattedEr['ДОВОД'], 0);
+    let param4 = this.formattedEr['ОБОСНОВАНИЕ'] === 0 ? 1 : 0;
+
+    return param1 + param2 + param3 + param4;
+  }
+
+  setOshErrors() {
+    let oshHelp: { code: string; start: number; end: number }[] = [
+      {
+        code: 'ПРОБЛЕМА',
+        start: 1000000,
+        end: 1000000,
+      },
+      {
+        code: 'ЛМНЕНИЕ',
+        start: 1000001,
+        end: 1000001,
+      },
+      {
+        code: 'ПРМНЕНИЕ',
+        start: 1000002,
+        end: 1000002,
+      },
+      {
+        code: 'ОБОСНОВАНИЕ',
+        start: 1000003,
+        end: 1000003,
+      },
+      {
+        code: 'ВЫВОД',
+        start: 1000004,
+        end: 1000004,
+      },
+    ];
+
+    //установим координаты смысловых блоков, участвующих в расчёте ОшПлан
+    for (let i in this.markUpData.selections) {
+      for (let q in oshHelp) {
+        if (oshHelp[q].code === this.markUpData.selections[i].type) {
+          oshHelp[q].start = this.markUpData.selections[i].startSelection;
+          oshHelp[q].end = this.markUpData.selections[i].endSelection;
         }
+      }
     }
 
-    setK4(): void {
-        if (this.formattedEr['А.грамм'] <= 2 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] === 0) {
-            this.criteria.K4 = 3
-        } else if (this.formattedEr['А.грамм'] <= 4 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] === 0) {
-            this.criteria.K4 = 2
-        } else if (this.formattedEr['А.грамм'] <= 7 && this.formattedEr['А.уровень'] === 0 && this.formattedEr['А.несоотв'] <= 1) {
-            this.criteria.K4 = 1
-        } else {
-            this.criteria.K4 = 0
+    let errorsCount: number = 0;
+    oshHelp.forEach(function (item, key, array) {
+      //для отсутствующих элементов просто увеличиваем число ошибок
+      if (array[key].start > 1000000 && array[key].end > 1000000) {
+        errorsCount++;
+        return;
+      }
+
+      //для элементов посреди ряда - проверяем на обнуление следующий и высчитываем положение
+      if (key !== array.length - 1) {
+        if (
+          array[key + 1].start < 100000 &&
+          array[key + 1].end < 100000 &&
+          array[key].start > array[key + 1].start &&
+          array[key + 1].end < array[key].end
+        ) {
+          errorsCount++;
         }
-    }
-
-    setK5(): void {
-        if (this.formattedEr['А.орф'] <= 1 && this.formattedEr['А.пункт'] <= 1) {
-            this.criteria.K5 = 2
-        } else if ((this.formattedEr['А.орф'] + this.formattedEr['А.пункт']) <= 4) {
-            this.criteria.K5 = 1
-        } else {
-            this.criteria.K5 = 0
+      } else {
+        //для последнего элемента установим факт обнуления предыдущего = последний элемент не на своем месте
+        if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
+          errorsCount++;
         }
-    }
+      }
+    });
 
-    setUnproductivePercent(): number {
-        let resultPercent: number = 0
-        let upProdWordsCount: number = 0
-        let totalWordsCount: number = Operations.countWords(this.markUpData.text)
-        for (let i in this.markUpData.selections) {
-            if (this.markUpData.selections[i].type === 'А.непрод') {
-                upProdWordsCount += Operations.countWords(this.markUpData.text.substring(
-                    this.markUpData.selections[i].startSelection,
-                    this.markUpData.selections[i].endSelection
-                ))
-            }
-        }
-
-        if (upProdWordsCount !== 0) {
-            resultPercent = (upProdWordsCount / totalWordsCount) * 100
-            return Math.round(resultPercent)
-        }
-
-        return resultPercent
-    }
-
-    setOshAspects(): number {
-        let param1 = this.formattedEr['ЛМНЕНИЕ'] === 0 ? 1 : 0
-        let param2 = this.formattedEr['ПРМНЕНИЕ'] === 0 ? 1 : 0
-        let param3 = Math.max(3 - this.formattedEr['ДОВОД'], 0)
-        let param4 = this.formattedEr['ОБОСНОВАНИЕ'] === 0 ? 1 : 0
-
-        return param1 + param2 + param3 + param4
-    }
-
-    setOshErrors() {
-        let oshHelp: { code: string, start: number, end: number }[] = [
-            {
-                'code': 'ПРОБЛЕМА',
-                'start': 1000000,
-                'end': 1000000,
-            },
-            {
-                'code': 'ЛМНЕНИЕ',
-                'start': 1000001,
-                'end': 1000001,
-            },
-            {
-                'code': 'ПРМНЕНИЕ',
-                'start': 1000002,
-                'end': 1000002,
-            },
-            {
-                'code': 'ОБОСНОВАНИЕ',
-                'start': 1000003,
-                'end': 1000003,
-            },
-            {
-                'code': 'ВЫВОД',
-                'start': 1000004,
-                'end': 1000004,
-            },
-        ]
-
-        //установим координаты смысловых блоков, участвующих в расчёте ОшПлан
-        for (let i in this.markUpData.selections) {
-            for (let q in oshHelp) {
-                if (oshHelp[q].code === this.markUpData.selections[i].type) {
-                    oshHelp[q].start = this.markUpData.selections[i].startSelection
-                    oshHelp[q].end = this.markUpData.selections[i].endSelection
-                }
-            }
-        }
-
-        let errorsCount: number = 0
-        oshHelp.forEach(function (item, key, array) {
-            //для отсутствующих элементов просто увеличиваем число ошибок
-            if (array[key].start > 1000000 && array[key].end > 1000000) {
-                errorsCount++
-                return
-            }
-
-            //для элементов посреди ряда - проверяем на обнуление следующий и высчитываем положение
-            if (key !== array.length - 1) {
-                if (
-                    (array[key + 1].start < 100000 && array[key + 1].end < 100000) &&
-                    (array[key].start > array[key + 1].start && array[key + 1].end < array[key].end)
-                ) {
-                    errorsCount++
-                }
-
-            } else {
-                //для последнего элемента установим факт обнуления предыдущего = последний элемент не на своем месте
-                if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
-                    errorsCount++
-                }
-            }
-        })
-
-        this.oshPlanErrorsCount = errorsCount
-    }
+    this.oshPlanErrorsCount = errorsCount;
+  }
 }
