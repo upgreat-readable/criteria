@@ -1,6 +1,6 @@
 {
   "name": "@upgreat-readable/criteria",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "readable criterion package",
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
   "scripts": {
     "pretty": "prettier --write .",
     "commit": "git-cz",
-    "lint:code": "eslint \"./**/*.{js,jsx}\"",
+    "lint:code": "eslint \"./src/*.{ts,tsx}\"",
     "release": "standard-version"
   },
   "prettier": {
