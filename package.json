@@ -33,7 +33,8 @@
     "pretty": "prettier --write .",
     "commit": "git-cz",
     "lint:code": "eslint \"./src/*.{ts,tsx}\"",
-    "release": "standard-version"
+    "release": "standard-version",
+    "test": "echo \"No test specified\""
   },
   "prettier": {
     "trailingComma": "all",
