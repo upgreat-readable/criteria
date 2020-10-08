@@ -7,7 +7,7 @@
 ## Usage
 
 ```ts
-import { CriterionFabric } from '@upgreat-readable/criteria';
+import CriterionFabric from '@upgreat-readable/criteria';
 
 const criteria = new CriterionFabric(essay).run();
 ```

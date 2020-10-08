@@ -50,6 +50,6 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "main": "./build/estimate/criterionFabric.js",
-  "types": "./build/estimate/criterionFabric.d.ts"
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts"
 }
