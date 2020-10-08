@@ -5,3 +5,8 @@ tsconfig.json
 .travis.yml
 yarn.lock
 **/__tests__/*
+/.idea
+.prettierrc.json
+.prettierignore
+.eslintrc
+.eslintignore
