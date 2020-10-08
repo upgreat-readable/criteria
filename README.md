@@ -2,6 +2,8 @@
 
 Пакет расчёта критериев (прим. - оценок) эссе
 
+[![NPM](https://nodei.co/npm/@upgreat-readable/criteria.png?compact=true)](https://npmjs.org/package/@upgreat-readable/criteria)
+
 ## Usage
 
 ```ts
