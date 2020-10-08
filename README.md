@@ -8,8 +8,10 @@
 
 ```ts
 import CriterionFabric from '@upgreat-readable/criteria';
+import {AppointmentFabric} from '@upgreat-readable/criteria';
 
 const criteria = new CriterionFabric(essay).run();
+const appointment = new AppointmentFabric(essay).run();
 ```
 
 ## Права

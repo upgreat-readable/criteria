@@ -22,7 +22,7 @@ export abstract class AbstractProcessor {
 
     for (let i in this.markUpData.selections) {
       arSelCounts.push({
-        code: this.markUpData.selections[i].type,
+        code: this.markUpData.selections[i].type.toLowerCase(),
         tag: this.markUpData.selections[i].tag,
         count: 1,
       });
@@ -70,46 +70,46 @@ export abstract class AbstractProcessor {
     // console.log(result);
 
     for (let key in result) {
-      if (key.match(/^Г\./)) {
+      if (key.match(/^г\./)) {
         grammaticalMistakes++;
         delete result[key];
       }
-      if (key.match(/^Р\./)) {
+      if (key.match(/^р\./)) {
         speechMistakes++;
         delete result[key];
       }
-      if (key.match(/^Л\./)) {
+      if (key.match(/^л\./)) {
         logicMistakes++;
         delete result[key];
       }
-      if (key.match(/^Ф\./)) {
+      if (key.match(/^ф\./)) {
         factualMistakes++;
         delete result[key];
       }
-      if (key.match(/^Э\./)) {
+      if (key.match(/^э\./)) {
         ethicalMistakes++;
         delete result[key];
       }
     }
     grammaticalMistakes !== 0
-      ? (result['ошГрам'] = grammaticalMistakes)
-      : (result['ошГрам'] = 0);
+      ? (result['ошграм'] = grammaticalMistakes)
+      : (result['ошграм'] = 0);
     speechMistakes !== 0
-      ? (result['ошРеч'] = speechMistakes)
-      : (result['ошРеч'] = 0);
+      ? (result['ошреч'] = speechMistakes)
+      : (result['ошреч'] = 0);
     logicMistakes !== 0
-      ? (result['ошЛог'] = logicMistakes)
-      : (result['ошЛог'] = 0);
+      ? (result['ошлог'] = logicMistakes)
+      : (result['ошлог'] = 0);
     factualMistakes !== 0
-      ? (result['ошФакт'] = factualMistakes)
-      : (result['ошФакт'] = 0);
+      ? (result['ошфакт'] = factualMistakes)
+      : (result['ошфакт'] = 0);
     ethicalMistakes !== 0
-      ? (result['ошЭтич'] = ethicalMistakes)
-      : (result['ошЭтич'] = 0);
+      ? (result['ошэтич'] = ethicalMistakes)
+      : (result['ошэтич'] = 0);
 
     //@todo зануляем непонятные ошибки
-    result['ошПункт'] = 0;
-    result['ошОрф'] = 0;
+    result['ошпункт'] = 0;
+    result['ошорф'] = 0;
 
     this.fillBasicMarkUps(result);
 
@@ -125,6 +125,9 @@ export abstract class AbstractProcessor {
   }
 
   analyze(): any {
+    this.predefinedValues.forEach((value, index, array) => {
+      array[index] = value.toLowerCase();
+    });
     this.countWords();
     this.tallyErrors();
   }

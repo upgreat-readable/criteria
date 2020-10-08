@@ -93,6 +93,9 @@ export class RussianL extends AbstractProcessor {
 
     this.setK6();
 
+    console.log(this.criteria);
+    console.log(Operations.objectSum(this.criteria));
+
     if (Operations.objectSum(this.criteria) > russianMaxPoints) {
       throw new Error(
         'Высчитанное количество баллов превысило максимально допустимое значение.',
@@ -190,12 +193,12 @@ export class RussianL extends AbstractProcessor {
 
   setK7(): void {
     // this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
-    this.criteria.K7 = 3;
+    this.criteria.K7 = Math.floor(3);
   }
 
   setK8(): void {
     // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
-    this.criteria.K8 = 3.5;
+    this.criteria.K8 = Math.floor(3.5);
   }
 
   setK9(): void {

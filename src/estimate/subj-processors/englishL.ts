@@ -11,63 +11,64 @@ export class EnglishL extends AbstractProcessor {
   };
 
   predefinedValues: string[] = [
-    'ПРОБЛЕМА',
-    'ЛМНЕНИЕ',
-    'ПРМНЕНИЕ',
-    'ДОВОД',
-    'ОБОСНОВАНИЕ',
-    'ВЫВОД',
-    'А.стиль',
-    'А.аспект',
-    'А.объем',
-    'А.непрод',
-    'А.логика',
-    'А.нсвязь',
-    'А.связь',
-    'А.абзац',
-    'А.лексика',
-    'А.запас',
-    'А.грамм',
-    'А.повтор',
-    'А.уровень',
-    'А.несоотв',
-    'А.орф',
-    'А.пункт',
+    'проблема',
+    'лмнение',
+    'прмнение',
+    'аргумент',
+    'обоснование',
+    'вывод',
+    'а.стиль',
+    'а.перифр',
+    'а.пробл',
+    'а.аспект',
+    'а.аспм',
+    'а.факт',
+    'а.объем',
+    'а.непрод',
+    'а.логика',
+    'а.связь',
+    'а.абзац',
+    'а.лекс',
+    'а.запас',
+    'а.грамм',
+    'а.уров',
+    'а.орф',
+    'а.пункт',
   ];
 
   oshPlanErrorsCount: number = 0;
 
   /*
 
-        ошАспекты = [ЛМНЕНИЕ=0] + [ПРМНЕНИЕ=0] + max(3 – ДОВОД, 0) + [ОБОСНОВАНИЕ=0];
-        если (А.объем<200 слов) или (А.непрод>30% слов) то К1 = 0;
-        иначе если (ошАспекты=0) и (А.аспект=0) и (А.стиль<=1) то К1 = 3;
-        иначе если (ошАспекты=0) и (А.аспект<=2) и (А.стиль<=3), то К1 = 2;
-        иначе если (ошАспекты*2+А.аспект<=4) и (А.стиль<=4), то К1 = 1;
-        иначе К1 = 0;
-        если (К1 = 0), то К = 0 и остальные критерии не вычисляем;
-        @todo необходимо, чтобы ДОВОД-ы ЛМНЕНИЯ имели одинаковые теги с ЛМНЕНИЕ, равно как и ДОВОД-ы ПРМНЕНИЕ с ПРМНЕНИЕ
-        @todo - уточнить - блоки значения ошПлан следуют один за другим и не могут быть вложены друг в друга?
-        ошПлан = число блоков, отсутствующих или нарушающих порядок следования в последовательности {ПРОБЛЕМА, ЛМНЕНИЕ, {ДОВОД-ы, относящиеся к ЛМНЕНИЕ}, ПРМНЕНИЕ, {ДОВОД-ы, относящиеся к ПРМНЕНИЕ}, ОБОСНОВАНИЕ, ВЫВОД};
-        если (ошПлан=0) и (А.логика=0) и (А.нсвязь=0) и (А.связь=0) и (А.абзац=0) то К2 = 3;
-        иначе если (ошПлан + А.логика + А.нсвязь + А.абзац<=4) и (А.связь=0) то К2 = 2;
-        иначе если (ошПлан + А.логика + А.связь + А.абзац<=8) то К2 = 1;
-        иначе К2 = 0;
-        если (А.лексика<=1) и (А.запас=0) то К3 = 3;
-        иначе если (А.лексика+3*А.запас<=3) то К3 = 2;
-        иначе если (А.лексика<=4) и (А.запас<=1) то К3 = 1;
-        иначе К3 = 0;
+              ошАспекты = [ЛМНЕНИЕ=0] + [ПРМНЕНИЕ=0] + max(3 – ДОВОД, 0) + [ОБОСНОВАНИЕ=0];
+              если (А.объем<200 слов) или (А.непрод>30% слов) то К1 = 0;
+              иначе если (ошАспекты=0) и (А.аспект=0) и (А.стиль<=1) то К1 = 3;
+              иначе если (ошАспекты=0) и (А.аспект<=2) и (А.стиль<=3), то К1 = 2;
+              иначе если (ошАспекты*2+А.аспект<=4) и (А.стиль<=4), то К1 = 1;
+              иначе К1 = 0;
+              если (К1 = 0), то К = 0 и остальные критерии не вычисляем;
+              @todo необходимо, чтобы ДОВОД-ы ЛМНЕНИЯ имели одинаковые теги с ЛМНЕНИЕ, равно как и ДОВОД-ы ПРМНЕНИЕ с ПРМНЕНИЕ
+              @todo - уточнить - блоки значения ошПлан следуют один за другим и не могут быть вложены друг в друга?
+              ошПлан = число блоков, отсутствующих или нарушающих порядок следования в последовательности {ПРОБЛЕМА, ЛМНЕНИЕ, {ДОВОД-ы, относящиеся к ЛМНЕНИЕ}, ПРМНЕНИЕ, {ДОВОД-ы, относящиеся к ПРМНЕНИЕ}, ОБОСНОВАНИЕ, ВЫВОД};
+              если (ошПлан=0) и (А.логика=0) и (А.нсвязь=0) и (А.связь=0) и (А.абзац=0) то К2 = 3;
+              иначе если (ошПлан + А.логика + А.нсвязь + А.абзац<=4) и (А.связь=0) то К2 = 2;
+              иначе если (ошПлан + А.логика + А.связь + А.абзац<=8) то К2 = 1;
+              иначе К2 = 0;
+              если (А.лексика<=1) и (А.запас=0) то К3 = 3;
+              иначе если (А.лексика+3*А.запас<=3) то К3 = 2;
+              иначе если (А.лексика<=4) и (А.запас<=1) то К3 = 1;
+              иначе К3 = 0;
 
-        если (А.грамм<=2) и (А.уровень=0) и (А.несоотв=0) то К4 = 3;
-        иначе если (А.грамм<=4) и (А.уровень=0) и (А.несоотв=0) то К4 = 2;
-        иначе если (А.грамм<=7) и (А.уровень=0) и (А.несоотв<=1) то К4 = 1;
-        иначе К4 = 0;
+              если (А.грамм<=2) и (А.уровень=0) и (А.несоотв=0) то К4 = 3;
+              иначе если (А.грамм<=4) и (А.уровень=0) и (А.несоотв=0) то К4 = 2;
+              иначе если (А.грамм<=7) и (А.уровень=0) и (А.несоотв<=1) то К4 = 1;
+              иначе К4 = 0;
 
-        если (А.орф<=1) и (А.пункт<=1) то К5 = 2;
-        иначе если (А.орф+А.пункт<=4) то К5 = 1;
-        иначе К5 = 0;
-        итоговая оценка K = К1 + К2 + К3 + К4 + К5  (максимальное значение К=14).
-     */
+              если (А.орф<=1) и (А.пункт<=1) то К5 = 2;
+              иначе если (А.орф+А.пункт<=4) то К5 = 1;
+              иначе К5 = 0;
+              итоговая оценка K = К1 + К2 + К3 + К4 + К5  (максимальное значение К=14).
+           */
   analyze(): any {
     //считаем количество ошПлан
     this.setOshErrors();
@@ -96,19 +97,19 @@ export class EnglishL extends AbstractProcessor {
       this.criteria.K1 = 0;
     } else if (
       oshAspects === 0 &&
-      this.formattedEr['А.аспект'] === 0 &&
-      this.formattedEr['А.стиль'] <= 1
+      this.formattedEr['а.аспект'] === 0 &&
+      this.formattedEr['а.стиль'] <= 1
     ) {
       this.criteria.K1 = 3;
     } else if (
       oshAspects === 0 &&
-      this.formattedEr['А.аспект'] <= 2 &&
-      this.formattedEr['А.стиль'] <= 3
+      this.formattedEr['а.аспект'] <= 2 &&
+      this.formattedEr['а.стиль'] <= 3
     ) {
       this.criteria.K1 = 2;
     } else if (
-      oshAspects * 2 + this.formattedEr['А.аспект'] <= 4 &&
-      this.formattedEr['А.стиль'] <= 4
+      oshAspects * 2 + this.formattedEr['а.аспект'] <= 4 &&
+      this.formattedEr['а.стиль'] <= 4
     ) {
       this.criteria.K1 = 1;
     } else {
@@ -119,28 +120,26 @@ export class EnglishL extends AbstractProcessor {
   setK2(): void {
     if (
       this.oshPlanErrorsCount === 0 &&
-      this.formattedEr['А.логика'] === 0 &&
-      this.formattedEr['А.нсвязь'] === 0 &&
-      this.formattedEr['А.связь'] === 0 &&
-      this.formattedEr['А.абзац'] === 0
+      this.formattedEr['а.логика'] === 0 &&
+      this.formattedEr['а.связь'] === 0 &&
+      this.formattedEr['а.абзац'] === 0
     ) {
       this.criteria.K2 = 3;
     } else if (
       Operations.sum(
         this.oshPlanErrorsCount,
-        this.formattedEr['А.логика'],
-        this.formattedEr['А.нсвязь'],
-        this.formattedEr['А.абзац'],
-      ) <= 4 &&
-      this.formattedEr['А.связь'] === 0
+        this.formattedEr['а.логика'],
+        this.formattedEr['а.связь'],
+        this.formattedEr['а.абзац'],
+      ) <= 4
     ) {
       this.criteria.K2 = 2;
     } else if (
       Operations.sum(
         this.oshPlanErrorsCount,
-        this.formattedEr['А.логика'],
-        this.formattedEr['А.связь'],
-        this.formattedEr['А.абзац'],
+        this.formattedEr['а.логика'],
+        this.formattedEr['а.связь'],
+        this.formattedEr['а.абзац'],
       ) <= 8
     ) {
       this.criteria.K2 = 1;
@@ -150,19 +149,16 @@ export class EnglishL extends AbstractProcessor {
   }
 
   setK3(): void {
-    if (
-      this.formattedEr['А.лексика'] <= 1 &&
-      this.formattedEr['А.запас'] === 0
-    ) {
+    if (this.formattedEr['а.лекс'] <= 1 && this.formattedEr['а.запас'] === 0) {
       this.criteria.K3 = 3;
     } else if (
-      this.formattedEr['А.лексика'] + 3 * this.formattedEr['А.запас'] <=
+      this.formattedEr['а.лекс'] + 3 * this.formattedEr['а.запас'] <=
       3
     ) {
       this.criteria.K3 = 2;
     } else if (
-      this.formattedEr['А.лексика'] <= 4 &&
-      this.formattedEr['А.запас'] <= 1
+      this.formattedEr['а.лекс'] <= 4 &&
+      this.formattedEr['а.запас'] <= 1
     ) {
       this.criteria.K3 = 1;
     } else {
@@ -171,22 +167,16 @@ export class EnglishL extends AbstractProcessor {
   }
 
   setK4(): void {
-    if (
-      this.formattedEr['А.грамм'] <= 2 &&
-      this.formattedEr['А.уровень'] === 0 &&
-      this.formattedEr['А.несоотв'] === 0
-    ) {
+    if (this.formattedEr['а.грамм'] <= 2 && this.formattedEr['а.уров'] === 0) {
       this.criteria.K4 = 3;
     } else if (
-      this.formattedEr['А.грамм'] <= 4 &&
-      this.formattedEr['А.уровень'] === 0 &&
-      this.formattedEr['А.несоотв'] === 0
+      this.formattedEr['а.грамм'] <= 4 &&
+      this.formattedEr['а.уров'] === 0
     ) {
       this.criteria.K4 = 2;
     } else if (
-      this.formattedEr['А.грамм'] <= 7 &&
-      this.formattedEr['А.уровень'] === 0 &&
-      this.formattedEr['А.несоотв'] <= 1
+      this.formattedEr['а.грамм'] <= 7 &&
+      this.formattedEr['а.уров'] <= 1
     ) {
       this.criteria.K4 = 1;
     } else {
@@ -195,9 +185,9 @@ export class EnglishL extends AbstractProcessor {
   }
 
   setK5(): void {
-    if (this.formattedEr['А.орф'] <= 1 && this.formattedEr['А.пункт'] <= 1) {
+    if (this.formattedEr['а.орф'] <= 1 && this.formattedEr['а.пункт'] <= 1) {
       this.criteria.K5 = 2;
-    } else if (this.formattedEr['А.орф'] + this.formattedEr['А.пункт'] <= 4) {
+    } else if (this.formattedEr['а.орф'] + this.formattedEr['а.пункт'] <= 4) {
       this.criteria.K5 = 1;
     } else {
       this.criteria.K5 = 0;
@@ -209,7 +199,7 @@ export class EnglishL extends AbstractProcessor {
     let upProdWordsCount: number = 0;
     let totalWordsCount: number = Operations.countWords(this.markUpData.text);
     for (let i in this.markUpData.selections) {
-      if (this.markUpData.selections[i].type === 'А.непрод') {
+      if (this.markUpData.selections[i].type === 'а.непрод') {
         upProdWordsCount += Operations.countWords(
           this.markUpData.text.substring(
             this.markUpData.selections[i].startSelection,
@@ -228,38 +218,44 @@ export class EnglishL extends AbstractProcessor {
   }
 
   setOshAspects(): number {
-    let param1 = this.formattedEr['ЛМНЕНИЕ'] === 0 ? 1 : 0;
-    let param2 = this.formattedEr['ПРМНЕНИЕ'] === 0 ? 1 : 0;
-    let param3 = Math.max(3 - this.formattedEr['ДОВОД'], 0);
-    let param4 = this.formattedEr['ОБОСНОВАНИЕ'] === 0 ? 1 : 0;
+    let param1 =
+      this.formattedEr['проблема'] === 0 ||
+      this.formattedEr['а.перифр'] > 0 ||
+      this.formattedEr['а.пробл'] > 0
+        ? 1
+        : 0;
+    let param2 = this.formattedEr['лмнение'] === 0 ? 1 : 0;
+    let param3 = this.formattedEr['прмнение'] === 0 ? 1 : 0;
+    let param4 = Math.max(3 - this.formattedEr['аргумент'], 0);
+    let param5 = this.formattedEr['обоснование'] === 0 ? 1 : 0;
 
-    return param1 + param2 + param3 + param4;
+    return param1 + param2 + param3 + param4 + param5;
   }
 
   setOshErrors() {
     let oshHelp: { code: string; start: number; end: number }[] = [
       {
-        code: 'ПРОБЛЕМА',
+        code: 'проблема',
         start: 1000000,
         end: 1000000,
       },
       {
-        code: 'ЛМНЕНИЕ',
+        code: 'лмнение',
         start: 1000001,
         end: 1000001,
       },
       {
-        code: 'ПРМНЕНИЕ',
+        code: 'прмнение',
         start: 1000002,
         end: 1000002,
       },
       {
-        code: 'ОБОСНОВАНИЕ',
+        code: 'обоснование',
         start: 1000003,
         end: 1000003,
       },
       {
-        code: 'ВЫВОД',
+        code: 'вывод',
         start: 1000004,
         end: 1000004,
       },

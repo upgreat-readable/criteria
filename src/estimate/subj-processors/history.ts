@@ -14,55 +14,55 @@ export class History extends AbstractProcessor {
   };
 
   predefinedValues: string[] = [
-    'СОБЫТИЕ',
-    'СЯП',
-    'РОЛЬ',
-    'ПРИЧИНА',
-    'СЛЕДСТВИЕ',
-    'ОЦЕНКА',
-    'И.событие',
-    'И.сяп',
-    'И.период',
-    'И.личность',
-    'И.лсвязь',
-    'И.лпериод',
-    'И.лроль',
-    'И.лдейств',
-    'И.причин',
-    'И.следств',
-    'И.влиян',
-    'И.упрощ',
-    'И.понятие',
-    'И.неиспол',
-    'И.факт',
-    'И.излож',
+    'событие',
+    'сяп',
+    'роль',
+    'причина',
+    'следствие',
+    'оценка',
+    'и.событие',
+    'и.сяп',
+    'и.период',
+    'и.личность',
+    'и.лсвязь',
+    'и.лпериод',
+    'и.лроль',
+    'и.лдейств',
+    'и.причин',
+    'и.следств',
+    'и.влиян',
+    'и.упрощ',
+    'и.понятие',
+    'и.неиспол',
+    'и.факт',
+    'и.излож',
   ];
 
   roles = [
     {
       roleId: 1,
-      code: 'РОЛЬ',
+      code: 'роль',
       tag: '',
       count: 0,
       elems: {
-        'И.личность': 0,
-        'И.лсвязь': 0,
-        'И.лпериод': 0,
-        'И.лроль': 0,
-        'И.лдейств': 0,
+        'и.личность': 0,
+        'и.лсвязь': 0,
+        'и.лпериод': 0,
+        'и.лроль': 0,
+        'и.лдейств': 0,
       },
     },
     {
       roleId: 2,
-      code: 'РОЛЬ',
+      code: 'роль',
       tag: '',
       count: 0,
       elems: {
-        'И.личность': 0,
-        'И.лсвязь': 0,
-        'И.лпериод': 0,
-        'И.лроль': 0,
-        'И.лдейств': 0,
+        'и.личность': 0,
+        'и.лсвязь': 0,
+        'и.лпериод': 0,
+        'и.лроль': 0,
+        'и.лдейств': 0,
       },
     },
   ];
@@ -74,8 +74,8 @@ export class History extends AbstractProcessor {
       reason: 0,
       consequence: 0,
       elems: {
-        'И.причин': 0,
-        'И.следств': 0,
+        'и.причин': 0,
+        'и.следств': 0,
       },
     },
     {
@@ -84,28 +84,28 @@ export class History extends AbstractProcessor {
       reason: 0,
       consequence: 0,
       elems: {
-        'И.причин': 0,
-        'И.следств': 0,
+        'и.причин': 0,
+        'и.следств': 0,
       },
     },
   ];
 
   /*
-        К1 = max(0, min(2, СЯП – И.сяп – И.период));
+        К1 = max(0, min(2, сяп – и.сяп – и.период));
         если (К1=0) то К=К1=…=К7=0 и далее оценивание не производится;
         выделяются две совокупности фрагментов, описывающих две исторические личности:
-        Личн1 = [РОЛЬ1>0] – [И.личность1 + И.лсвязь1 + И.лпериод1 + И.лроль1 + И.лдейств1 >0];
-        Личн2 = [РОЛЬ2>0] – [И.личность2 + И.лсвязь2 + И.лпериод2 + И.лроль2 + И.лдейств2 >0];
+        Личн1 = [роль1>0] – [и.личность1 + и.лсвязь1 + и.лпериод1 + и.лроль1 + и.лдейств1 >0];
+        Личн2 = [роль2>0] – [и.личность2 + и.лсвязь2 + и.лпериод2 + и.лроль2 + и.лдейств2 >0];
         К2 = Личн1 + Личн2;
         выделяются две пары фрагментов, описывающих две причинно-следственные связи:
-        ПСС1 = [ПРИЧИНА1>0 и СЛЕДСТВИЕ1>0] – [И.причин1 + И.следств1 >0];
-        ПСС2 = [ПРИЧИНА2>0 и СЛЕДСТВИЕ2>0] – [И.причин2 + И.следств2 >0];
+        ПСС1 = [причина1>0 и следствие1>0] – [и.причин1 + и.следств1 >0];
+        ПСС2 = [причина2>0 и следствие2>0] – [и.причин2 + и.следств2 >0];
         К3 = ПСС1 + ПСС2;
-        K4 = [ОЦЕНКА>0] – [И.влиян + И.упрощ>0];
-        K5 = 1 – [И.понятие + И.неиспол >0];
-        К6 = max(0, 3 – И.факт);
+        K4 = [оценка>0] – [и.влиян + и.упрощ>0];
+        K5 = 1 – [и.понятие + и.неиспол >0];
+        К6 = max(0, 3 – и.факт);
         если (К1+К2+К3+К4<5) то К7 = 0;
-        иначе К7 = [И.излож=0 и К1+К2+К3+К4>=5];
+        иначе К7 = [и.излож=0 и К1+К2+К3+К4>=5];
         К = К1 + …. + К7. Максимальное значение К = 12.
      */
   analyze(): any {
@@ -141,31 +141,30 @@ export class History extends AbstractProcessor {
       Math.min(
         2,
         Operations.diff(
-          this.formattedEr['СЯП'],
-          this.formattedEr['И.сяп'],
-          this.formattedEr['И.период'],
+          this.formattedEr['сяп'],
+          this.formattedEr['и.сяп'],
+          this.formattedEr['и.период'],
         ),
       ),
     );
   }
 
-  //@todo оптимизировать через foreach определение двух параметров в ряду
   setK2(): void {
     let sum1 = Operations.sum(
-      this.roles[0].elems['И.личность'],
-      this.roles[0].elems['И.лсвязь'],
-      this.roles[0].elems['И.лпериод'],
-      this.roles[0].elems['И.лроль'],
-      this.roles[0].elems['И.лдейств'],
+      this.roles[0].elems['и.личность'],
+      this.roles[0].elems['и.лсвязь'],
+      this.roles[0].elems['и.лпериод'],
+      this.roles[0].elems['и.лроль'],
+      this.roles[0].elems['и.лдейств'],
     );
     let factor1 = sum1 > 0 ? 1 : 0;
 
     let sum2 = Operations.sum(
-      this.roles[1].elems['И.личность'],
-      this.roles[1].elems['И.лсвязь'],
-      this.roles[1].elems['И.лпериод'],
-      this.roles[1].elems['И.лроль'],
-      this.roles[1].elems['И.лдейств'],
+      this.roles[1].elems['и.личность'],
+      this.roles[1].elems['и.лсвязь'],
+      this.roles[1].elems['и.лпериод'],
+      this.roles[1].elems['и.лроль'],
+      this.roles[1].elems['и.лдейств'],
     );
     let factor2 = sum2 > 0 ? 1 : 0;
 
@@ -188,8 +187,8 @@ export class History extends AbstractProcessor {
     }
 
     let sumToParam2 = Operations.sum(
-      this.reasonConsequence[0].elems['И.причин'],
-      this.reasonConsequence[0].elems['И.следств'],
+      this.reasonConsequence[0].elems['и.причин'],
+      this.reasonConsequence[0].elems['и.следств'],
     );
     let param2 = sumToParam2 > 0 ? 1 : 0;
 
@@ -206,8 +205,8 @@ export class History extends AbstractProcessor {
     }
 
     let sumToParam4 = Operations.sum(
-      this.reasonConsequence[1].elems['И.причин'],
-      this.reasonConsequence[1].elems['И.следств'],
+      this.reasonConsequence[1].elems['и.причин'],
+      this.reasonConsequence[1].elems['и.следств'],
     );
     let param4 = sumToParam4 > 0 ? 1 : 0;
 
@@ -217,11 +216,11 @@ export class History extends AbstractProcessor {
   }
 
   setK4(): void {
-    let rating = this.formattedEr['ОЦЕНКА'] > 0 ? 1 : 0;
+    let rating = this.formattedEr['оценка'] > 0 ? 1 : 0;
 
     let sumToParam2 = Operations.sum(
-      this.formattedEr['И.влиян'],
-      this.formattedEr['И.упрощ'],
+      this.formattedEr['и.влиян'],
+      this.formattedEr['и.упрощ'],
     );
     let param2 = sumToParam2 > 0 ? 1 : 0;
 
@@ -230,8 +229,8 @@ export class History extends AbstractProcessor {
 
   setK5(): void {
     let sumToParam = Operations.sum(
-      this.formattedEr['И.понятие'],
-      this.formattedEr['И.неиспол'],
+      this.formattedEr['и.понятие'],
+      this.formattedEr['и.неиспол'],
     );
     let param = sumToParam > 0 ? 1 : 0;
 
@@ -239,7 +238,7 @@ export class History extends AbstractProcessor {
   }
 
   setK6(): void {
-    this.criteria.K6 = Math.max(0, 3 - this.formattedEr['И.факт']);
+    this.criteria.K6 = Math.max(0, 3 - this.formattedEr['и.факт']);
   }
 
   setK7(): void {
@@ -253,7 +252,7 @@ export class History extends AbstractProcessor {
     ) {
       this.criteria.K7 = 0;
     } else {
-      let param1 = this.formattedEr['И.излож'] === 0 ? 1 : 0;
+      let param1 = this.formattedEr['и.излож'] === 0 ? 1 : 0;
       let param2 =
         Operations.sum(
           this.criteria.K1,
@@ -276,17 +275,17 @@ export class History extends AbstractProcessor {
 
     for (let i in this.markUpData.selections) {
       switch (this.markUpData.selections[i].type) {
-        case 'РОЛЬ':
+        case 'роль':
           this.fillTheFirstTwoRoles(incR, this.markUpData.selections[i])
             ? incR++
             : '';
           break;
-        case 'ПРИЧИНА':
+        case 'причина':
           this.fillTheFirstTwoReason(incP, this.markUpData.selections[i])
             ? incP++
             : '';
           break;
-        case 'СЛЕДСТВИЕ':
+        case 'следствие':
           this.fillTheFirstTwoConsequence(incS, this.markUpData.selections[i])
             ? incS++
             : '';
@@ -343,8 +342,6 @@ export class History extends AbstractProcessor {
 
       this.roles[roleIndex].elems = roleElems;
     }
-
-    // console.log(this.roles);
   }
 
   setRcFragmentVariables(arRoleIndex = [0, 1]): void {
@@ -362,7 +359,5 @@ export class History extends AbstractProcessor {
 
       this.reasonConsequence[roleIndex].elems = roleElems;
     }
-
-    // console.log(this.reasonConsequence);
   }
 }
