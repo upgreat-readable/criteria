@@ -6,6 +6,7 @@ import { Literature } from './subj-decisions/literature';
 import { SocialScience } from './subj-decisions/socialScience';
 import { EnglishL } from './subj-decisions/englishL';
 import { abstractDecision } from './subj-decisions/abstractDecision';
+import { RussianLFree } from './subj-decisions/russianLFree';
 
 export class AppointmentFabric {
   firstMarkUp: MarkUpData;
@@ -32,8 +33,9 @@ export class AppointmentFabric {
 
     switch (subj) {
       case subjCodes.russianLanguage:
-      case subjCodes.russianLanguageFree:
         return new RussianL(this.firstMarkUp, this.secondMarkUp);
+      case subjCodes.russianLanguageFree:
+        return new RussianLFree(this.firstMarkUp, this.secondMarkUp);
       case subjCodes.literature:
         return new Literature(this.firstMarkUp, this.secondMarkUp);
       case subjCodes.socialScience:

@@ -11,13 +11,13 @@ export class SocialScience extends AbstractProcessor {
   };
 
   predefinedValues: string[] = [
-    'ИДЕЯ',
-    'ПОНЯТИЕ',
-    'ТЕОРИЯ',
-    'ЛОГИКА',
-    'ПРИМЕР.ОБЩ',
-    'ПРИМЕР.ЛИЧ',
-    'ПРИМЕР.ИСТ',
+    'идея',
+    'понятие',
+    'теория',
+    'логика',
+    'пример.общ',
+    'пример.лич',
+    'пример.ист',
     'о.смысл',
     'о.подмена',
     'о.пересказ',
@@ -36,12 +36,12 @@ export class SocialScience extends AbstractProcessor {
   ];
 
   /*
-        если (ИДЕЯ>0) и (о.смысл=0) и (о.подмена=0) и (о.пересказ=0) то К1=1;
+        если (идея>0) и (о.смысл=0) и (о.подмена=0) и (о.пересказ=0) то К1=1;
         иначе К=К1=К2=К3=К4=0 и далее оценивание не производится;
         если (о.упрощ>0) то K2=0; иначе
-        К2 = max(0, [ПОНЯТИЕ>0] + [ТЕОРИЯ>0] – [о.понятие+о.теория>0] – о.теорсвязь – о.нехватает);
-        К3 = max(0, [ЛОГИКА>0] – о.рассужд – о.вывод);
-        К4 = max(0, min(2, [ПРИМЕР.ОБЩ>1] + [ПРИМЕР.ЛИЧ>1] + [ПРИМЕР.ИСТ>1]) – о.примсвязь – о.подтв – о.дубл – о.факт – о.подробн);
+        К2 = max(0, [понятие>0] + [теория>0] – [о.понятие+о.теория>0] – о.теорсвязь – о.нехватает);
+        К3 = max(0, [логика>0] – о.рассужд – о.вывод);
+        К4 = max(0, min(2, [пример.общ>1] + [пример.лич>1] + [пример.ист>1]) – о.примсвязь – о.подтв – о.дубл – о.факт – о.подробн);
         К = К1 + …. + К4. Максимальное значение К = 6.
      */
 
@@ -69,7 +69,7 @@ export class SocialScience extends AbstractProcessor {
 
   setK1(): void {
     if (
-      this.formattedEr['ИДЕЯ'] > 0 &&
+      this.formattedEr['идея'] > 0 &&
       this.formattedEr['о.смысл'] === 0 &&
       this.formattedEr['о.подмена'] === 0 &&
       this.formattedEr['о.пересказ'] === 0
@@ -82,8 +82,8 @@ export class SocialScience extends AbstractProcessor {
     if (this.formattedEr['о.упрощ'] > 0) {
       this.criteria.K2 = 0;
     } else {
-      let conceptFlag = this.formattedEr['ПОНЯТИЕ'] > 0 ? 1 : 0;
-      let theoryFlag = this.formattedEr['ТЕОРИЯ'] > 0 ? 1 : 0;
+      let conceptFlag = this.formattedEr['понятие'] > 0 ? 1 : 0;
+      let theoryFlag = this.formattedEr['теория'] > 0 ? 1 : 0;
       let sumFlag =
         this.formattedEr['о.понятие'] + this.formattedEr['о.теория'] > 0
           ? 1
@@ -101,7 +101,7 @@ export class SocialScience extends AbstractProcessor {
   }
 
   setK3(): void {
-    let logicFlag = this.formattedEr['ЛОГИКА'] > 0 ? 1 : 0;
+    let logicFlag = this.formattedEr['логика'] > 0 ? 1 : 0;
     this.criteria.K3 = Math.max(
       0,
       logicFlag - this.formattedEr['о.рассужд'] - this.formattedEr['о.вывод'],
@@ -109,9 +109,9 @@ export class SocialScience extends AbstractProcessor {
   }
 
   setK4(): void {
-    let exSoc = this.formattedEr['ПРИМЕР.ОБЩ'] > 1 ? 1 : 0;
-    let exPerson = this.formattedEr['ПРИМЕР.ЛИЧ'] > 1 ? 1 : 0;
-    let exHist = this.formattedEr['ПРИМЕР.ИСТ'] > 1 ? 1 : 0;
+    let exSoc = this.formattedEr['пример.общ'] > 1 ? 1 : 0;
+    let exPerson = this.formattedEr['пример.лич'] > 1 ? 1 : 0;
+    let exHist = this.formattedEr['пример.ист'] > 1 ? 1 : 0;
 
     this.criteria.K4 = Math.max(
       0,

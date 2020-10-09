@@ -19,51 +19,51 @@ export class RussianL extends AbstractProcessor {
   };
 
   predefinedValues: string[] = [
-    'ПРОБЛЕМА',
-    'ПРИМЕР',
-    'ПОЯСНЕНИЕ',
-    'СВЯЗЬ',
-    'ПОЗИЦИЯ',
-    'ОТНОШЕНИЕ',
-    'П.проблема',
-    'П.факт',
-    'П.опора',
-    'П.пересказ',
-    'П.факткомм',
-    'П.другая',
-    'П.копир',
-    'П.позиция',
-    'П.отнош',
-    'П.обоснов',
-    'П.однообр',
-    'П.точность',
+    'проблема',
+    'пример',
+    'пояснение',
+    'связь',
+    'позиция',
+    'отношение',
+    'п.проблема',
+    'п.факт',
+    'п.опора',
+    'п.пересказ',
+    'п.факткомм',
+    'п.другая',
+    'п.копир',
+    'п.позиция',
+    'п.отнош',
+    'п.обоснов',
+    'п.однообр',
+    'п.точность',
   ];
 
   shortTextFlag: number = 0;
 
   /*
             если (объём < 70 слов) то K=К1=…=К12=0 и далее оценивание не производится;
-            если (ПРОБЛЕМА>0) и (П.проблема=0) и (П.факт=0)  то К1=1;
+            если (проблема>0) и (п.проблема=0) и (п.факт=0)  то К1=1;
             иначе К1=К2=К3=К4=0 и переход к вычислению К5–К12;
-            если (П.опора+П.пересказ+П.факткомм+П.другая+П.копир>0) то К2=0;
-            иначе если (ПРИМЕР>=2) и (ПОЯСНЕНИЕ>=2) и (СВЯЗЬ>=1) то К2=5;
-            иначе если (ПРИМЕР>=2) и (ПОЯСНЕНИЕ+СВЯЗЬ>=2) то К2=4;
-            иначе если (ПРИМЕР+ПОЯСНЕНИЕ+СВЯЗЬ>=3) то К2=3;
-            иначе если (ПРИМЕР=2) то К2=2;
-            иначе если (ПРИМЕР=1) то К2=1;
+            если (п.опора+п.пересказ+п.факткомм+п.другая+п.копир>0) то К2=0;
+            иначе если (пример>=2) и (пояснение>=2) и (связь>=1) то К2=5;
+            иначе если (пример>=2) и (пояснение+связь>=2) то К2=4;
+            иначе если (пример+пояснение+связь>=3) то К2=3;
+            иначе если (пример=2) то К2=2;
+            иначе если (пример=1) то К2=1;
             иначе К2=0;
-            если (ПОЗИЦИЯ>0) и (П.позиция=0) то К3=1 иначе К3=0;
-            если (ОТНОШЕНИЕ>0) и (П.отнош+П.обоснов=0) то К4=1 иначе К4=0;
+            если (позиция>0) и (п.позиция=0) то К3=1 иначе К3=0;
+            если (отношение>0) и (п.отнош+п.обоснов=0) то К4=1 иначе К4=0;
             КороткийТекст = [объём < 150 слов]
             К5 = max(2 – ошЛог, 0);
             К7 = max(0, округление_вниз(3 – 0.5*ошОрф – КороткийТекст));
-            К8 = max(0, округление_вниз(3.5 – 0.5*ошПункт – КороткийТекст));
+            К8 = max(0, округление_вниз(3.5 – 0.5*ошпункт – КороткийТекст));
             К9 = max(0, округление_вниз(2 – 0.5*ошГрам – КороткийТекст));
             К10 = max(0, округление_вниз(2.5 – 0.5*ошРеч – КороткийТекст));
             К11 = [ошЭтич = 0];
             К12 = [ошФакт = 0];
-            если (П.однообр+П.точность=0) и (K10>=2) то K6 = 2;
-            иначе если (П.однообр+П.точность=1) или (K10<2) то K6 = 1;
+            если (п.однообр+п.точность=0) и (K10>=2) то K6 = 2;
+            иначе если (п.однообр+п.точность=1) или (K10<2) то K6 = 1;
             иначе К6=0;
             К = К1 + …. + К12. Максимальное значение К = 24.
      */
@@ -93,9 +93,6 @@ export class RussianL extends AbstractProcessor {
 
     this.setK6();
 
-    console.log(this.criteria);
-    console.log(Operations.objectSum(this.criteria));
-
     if (Operations.objectSum(this.criteria) > russianMaxPoints) {
       throw new Error(
         'Высчитанное количество баллов превысило максимально допустимое значение.',
@@ -107,9 +104,9 @@ export class RussianL extends AbstractProcessor {
 
   setK1(): void {
     if (
-      this.formattedEr['ПРОБЛЕМА'] > 0 &&
-      this.formattedEr['П.проблема'] === 0 &&
-      this.formattedEr['П.факт'] === 0
+      this.formattedEr['проблема'] > 0 &&
+      this.formattedEr['п.проблема'] === 0 &&
+      this.formattedEr['п.факт'] === 0
     ) {
       this.criteria.K1 = 1;
     }
@@ -117,35 +114,35 @@ export class RussianL extends AbstractProcessor {
 
   setK2(): void {
     if (
-      this.formattedEr['П.опора'] +
-        this.formattedEr['П.пересказ'] +
-        this.formattedEr['П.факткомм'] +
-        this.formattedEr['П.другая'] +
-        this.formattedEr['П.копир'] >
+      this.formattedEr['п.опора'] +
+        this.formattedEr['п.пересказ'] +
+        this.formattedEr['п.факткомм'] +
+        this.formattedEr['п.другая'] +
+        this.formattedEr['п.копир'] >
       0
     ) {
       this.criteria.K2 = 0;
     } else if (
-      this.formattedEr['ПРИМЕР'] >= 2 &&
-      this.formattedEr['ПОЯСНЕНИЕ'] >= 2 &&
-      this.formattedEr['СВЯЗЬ'] >= 1
+      this.formattedEr['пример'] >= 2 &&
+      this.formattedEr['пояснение'] >= 2 &&
+      this.formattedEr['связь'] >= 1
     ) {
       this.criteria.K2 = 5;
     } else if (
-      this.formattedEr['ПРИМЕР'] >= 2 &&
-      this.formattedEr['ПОЯСНЕНИЕ'] + this.formattedEr['СВЯЗЬ'] >= 2
+      this.formattedEr['пример'] >= 2 &&
+      this.formattedEr['пояснение'] + this.formattedEr['связь'] >= 2
     ) {
       this.criteria.K2 = 4;
     } else if (
-      this.formattedEr['ПРИМЕР'] +
-        this.formattedEr['ПОЯСНЕНИЕ'] +
-        this.formattedEr['СВЯЗЬ'] >=
+      this.formattedEr['пример'] +
+        this.formattedEr['пояснение'] +
+        this.formattedEr['связь'] >=
       3
     ) {
       this.criteria.K2 = 3;
-    } else if (this.formattedEr['ПРИМЕР'] === 2) {
+    } else if (this.formattedEr['пример'] === 2) {
       this.criteria.K2 = 2;
-    } else if (this.formattedEr['ПРИМЕР'] === 1) {
+    } else if (this.formattedEr['пример'] === 1) {
       this.criteria.K2 = 1;
     } else {
       this.criteria.K2 = 0;
@@ -153,7 +150,7 @@ export class RussianL extends AbstractProcessor {
   }
 
   setK3(): void {
-    if (this.formattedEr['ПРИМЕР'] > 0 && this.formattedEr['П.позиция'] === 0) {
+    if (this.formattedEr['пример'] > 0 && this.formattedEr['п.позиция'] === 0) {
       this.criteria.K3 = 1;
     } else {
       this.criteria.K3 = 0;
@@ -162,8 +159,8 @@ export class RussianL extends AbstractProcessor {
 
   setK4(): void {
     if (
-      this.formattedEr['ОТНОШЕНИЕ'] > 0 &&
-      this.formattedEr['П.отнош'] + this.formattedEr['П.обоснов'] === 0
+      this.formattedEr['отношение'] > 0 &&
+      this.formattedEr['п.отнош'] + this.formattedEr['п.обоснов'] === 0
     ) {
       this.criteria.K4 = 1;
     } else {
@@ -172,17 +169,17 @@ export class RussianL extends AbstractProcessor {
   }
 
   setK5(): void {
-    this.criteria.K5 = Math.max(2 - this.formattedEr['ошЛог'], 0);
+    this.criteria.K5 = Math.max(2 - this.formattedEr['ошлог'], 0);
   }
 
   setK6(): void {
     if (
-      this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 0 &&
+      this.formattedEr['п.однообр'] + this.formattedEr['п.точность'] === 0 &&
       this.criteria.K10 >= 2
     ) {
       this.criteria.K6 = 2;
     } else if (
-      this.formattedEr['П.однообр'] + this.formattedEr['П.точность'] === 1 ||
+      this.formattedEr['п.однообр'] + this.formattedEr['п.точность'] === 1 ||
       this.criteria.K10 < 2
     ) {
       this.criteria.K6 = 1;
@@ -197,29 +194,29 @@ export class RussianL extends AbstractProcessor {
   }
 
   setK8(): void {
-    // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошПункт'] - this.shortTextFlag))
+    // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошпункт'] - this.shortTextFlag))
     this.criteria.K8 = Math.floor(3.5);
   }
 
   setK9(): void {
     this.criteria.K9 = Math.max(
       0,
-      Math.floor(2 - 0.5 * this.formattedEr['ошГрам'] - this.shortTextFlag),
+      Math.floor(2 - 0.5 * this.formattedEr['ошграм'] - this.shortTextFlag),
     );
   }
 
   setK10(): void {
     this.criteria.K10 = Math.max(
       0,
-      Math.floor(2.5 - 0.5 * this.formattedEr['ошРеч'] - this.shortTextFlag),
+      Math.floor(2.5 - 0.5 * this.formattedEr['ошреч'] - this.shortTextFlag),
     );
   }
 
   setK11(): void {
-    this.criteria.K11 = this.formattedEr['ошЭтич'] === 0 ? 1 : 0;
+    this.criteria.K11 = this.formattedEr['ошэтич'] === 0 ? 1 : 0;
   }
 
   setK12(): void {
-    this.criteria.K12 = this.formattedEr['ошФакт'] === 0 ? 1 : 0;
+    this.criteria.K12 = this.formattedEr['ошфакт'] === 0 ? 1 : 0;
   }
 }

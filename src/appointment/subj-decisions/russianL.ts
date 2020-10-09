@@ -17,7 +17,7 @@ export class RussianL extends abstractDecision {
       'K11',
       'K12',
     ]);
-    //расхождение итоговых оценок К двух экспертов составляет 7 или более баллов
+    //расхождение итоговых оценок К двух экспертов составляет 8 или более баллов
     if (Math.abs(this.firstCritSum - this.secondCritSum) >= 8) {
       this.decisionResult.decision = true;
     }

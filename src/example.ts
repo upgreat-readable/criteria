@@ -1,13 +1,13 @@
-import { CriterionFabric } from './estimate/criterionFabric';
-import { Operations } from './support/operations';
-import fs from 'fs';
-
+// import { CriterionFabric } from './estimate/criterionFabric';
+// import { Operations } from './support/operations';
+// import fs from 'fs';
+//
 // var files = fs
-//   .readdirSync('../testFiles/eng/')
+//   .readdirSync('../testFiles/rus/')
 //   .map(function (v) {
 //     return {
 //       name: v,
-//       time: fs.statSync('../testFiles/eng/' + v).mtime.getTime(),
+//       time: fs.statSync('../testFiles/rus/' + v).mtime.getTime(),
 //     };
 //   })
 //   .sort(function (a, b) {
@@ -25,16 +25,16 @@ import fs from 'fs';
 //     console.log(value);
 //     let markUpExample = JSON.parse(
 //       // @ts-ignore
-//       fs.readFileSync('../testFiles/eng/' + value, 'utf8'),
+//       fs.readFileSync('../testFiles/rus/' + value, 'utf8'),
 //     );
 //     let y = new CriterionFabric(markUpExample).run();
 //     console.log(y);
 //   });
 // }
-
-// let y = new CriterionFabric(markUpExample).run();
-// console.log(y);
-// console.log(Operations.objectSum(y));
-
-// let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()
-// console.log(x);
+//
+// // let y = new CriterionFabric(markUpExample).run();
+// // console.log(y);
+// // console.log(Operations.objectSum(y));
+//
+// // let x = new AppointmentFabric(markUpExample, markUpExample).appointThirdExpert()
+// // console.log(x);

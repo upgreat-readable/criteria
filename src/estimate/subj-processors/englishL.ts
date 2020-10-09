@@ -72,7 +72,6 @@ export class EnglishL extends AbstractProcessor {
   analyze(): any {
     //считаем количество ошПлан
     this.setOshErrors();
-
     super.analyze();
 
     this.setK1();
@@ -91,6 +90,7 @@ export class EnglishL extends AbstractProcessor {
 
   setK1(): void {
     let oshAspects = this.setOshAspects();
+
     let unproductivePercent = this.setUnproductivePercent();
 
     if (this.wordsCount < 180 || unproductivePercent > 30) {
@@ -274,7 +274,7 @@ export class EnglishL extends AbstractProcessor {
     let errorsCount: number = 0;
     oshHelp.forEach(function (item, key, array) {
       //для отсутствующих элементов просто увеличиваем число ошибок
-      if (array[key].start > 1000000 && array[key].end > 1000000) {
+      if (array[key].start >= 1000000 && array[key].end >= 1000000) {
         errorsCount++;
         return;
       }
@@ -291,7 +291,7 @@ export class EnglishL extends AbstractProcessor {
         }
       } else {
         //для последнего элемента установим факт обнуления предыдущего = последний элемент не на своем месте
-        if (array[key - 1].start > 100000 && array[key - 1].end > 100000) {
+        if (array[key - 1].start >= 100000 && array[key - 1].end >= 100000) {
           errorsCount++;
         }
       }

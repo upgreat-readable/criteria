@@ -7,6 +7,7 @@ import { History } from './subj-processors/history';
 import * as subjCodes from '../support/subjectCodes';
 import { EnglishL } from './subj-processors/englishL';
 import { ArCriterions } from '../interfaces/iCriterionFabric';
+import { RussianLFree } from './subj-processors/russianLFree';
 
 export class CriterionFabric implements iCriterion.ICriterionFabric {
   markUpExample: any;
@@ -29,8 +30,9 @@ export class CriterionFabric implements iCriterion.ICriterionFabric {
 
     switch (subj) {
       case subjCodes.russianLanguage:
-      case subjCodes.russianLanguageFree:
         return new RussianL(this.markUpExample);
+      case subjCodes.russianLanguageFree:
+        return new RussianLFree(this.markUpExample);
       case subjCodes.literature:
         return new Literature(this.markUpExample);
       case subjCodes.socialScience:
