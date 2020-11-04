@@ -150,7 +150,7 @@ export class RussianL extends AbstractProcessor {
   }
 
   setK3(): void {
-    if (this.formattedEr['пример'] > 0 && this.formattedEr['п.позиция'] === 0) {
+    if (this.formattedEr['позиция'] > 0 && this.formattedEr['п.позиция'] === 0) {
       this.criteria.K3 = 1;
     } else {
       this.criteria.K3 = 0;

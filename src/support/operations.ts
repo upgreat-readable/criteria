@@ -1,10 +1,11 @@
 export class Operations {
-  static countWords(text: string): number {
+  static countWords(ortext: string): number {
+    let text = ortext.replace(/\n/g," ");
     let newArray = text.split(' '),
       i,
       j;
     for (i = 0, j = 0; i < newArray.length; i++) {
-      if (['.', ',', ':', ';', '-', '–', '?', '!', '_'].includes(newArray[i])) {
+      if (['.', ',', ':', ';', '-', '–', '?', '!', '_', ' '].includes(newArray[i])) {
         continue;
       }
       j++;
