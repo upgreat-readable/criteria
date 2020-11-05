@@ -189,13 +189,11 @@ export class RussianL extends AbstractProcessor {
   }
 
   setK7(): void {
-    // this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошОрф']) - this.shortTextFlag)
-    this.criteria.K7 = Math.floor(3);
+    this.criteria.K7 = Math.max(0, Math.floor(3 - 0.5 * this.formattedEr['ошорф']) - this.shortTextFlag);
   }
 
   setK8(): void {
-    // this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошпункт'] - this.shortTextFlag))
-    this.criteria.K8 = Math.floor(3.5);
+    this.criteria.K8 = Math.max(0, Math.floor(3.5 - 0.5 * this.formattedEr['ошпункт'] - this.shortTextFlag));
   }
 
   setK9(): void {
