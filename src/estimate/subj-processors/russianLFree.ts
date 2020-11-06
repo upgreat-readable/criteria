@@ -47,6 +47,14 @@ export class RussianLFree extends AbstractProcessor {
       );
     }
 
+    for (let i in this.criteria) {
+      // @ts-ignore
+      if (this.criteria[i] < 0) {
+        // @ts-ignore
+        this.criteria[i] = 0;
+      }
+    }
+
     return this.criteria;
   }
 

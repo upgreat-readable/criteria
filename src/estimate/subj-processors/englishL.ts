@@ -85,6 +85,14 @@ export class EnglishL extends AbstractProcessor {
     this.setK4();
     this.setK5();
 
+    for (let i in this.criteria) {
+      // @ts-ignore
+      if (this.criteria[i] < 0) {
+        // @ts-ignore
+        this.criteria[i] = 0;
+      }
+    }
+
     return this.criteria;
   }
 
