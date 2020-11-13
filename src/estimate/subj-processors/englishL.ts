@@ -126,6 +126,7 @@ export class EnglishL extends AbstractProcessor {
   }
 
   setK2(): void {
+
     if (
       this.oshPlanErrorsCount === 0 &&
       this.formattedEr['а.логика'] === 0 &&
@@ -207,7 +208,7 @@ export class EnglishL extends AbstractProcessor {
     let upProdWordsCount: number = 0;
     let totalWordsCount: number = Operations.countWords(this.markUpData.text);
     for (let i in this.markUpData.selections) {
-      if (this.markUpData.selections[i].type === 'а.непрод') {
+      if (this.markUpData.selections[i].type.toLocaleLowerCase() === 'а.непрод') {
         upProdWordsCount += Operations.countWords(
           this.markUpData.text.substring(
             this.markUpData.selections[i].startSelection,
@@ -272,7 +273,7 @@ export class EnglishL extends AbstractProcessor {
     //установим координаты смысловых блоков, участвующих в расчёте ОшПлан
     for (let i in this.markUpData.selections) {
       for (let q in oshHelp) {
-        if (oshHelp[q].code === this.markUpData.selections[i].type) {
+        if (oshHelp[q].code === this.markUpData.selections[i].type.toLocaleLowerCase()) {
           oshHelp[q].start = this.markUpData.selections[i].startSelection;
           oshHelp[q].end = this.markUpData.selections[i].endSelection;
         }
