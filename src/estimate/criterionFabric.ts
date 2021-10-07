@@ -18,30 +18,33 @@ export class CriterionFabric implements iCriterion.ICriterionFabric {
     this.subject = this.getSubj();
   }
 
-  public run(): ArCriterions {
-    let subjObject = this.decisionCriterionClass(this.subject);
+  public run(webMode: boolean = false): ArCriterions {
+    let subjObject = this.decisionCriterionClass(this.subject, webMode);
     return subjObject.analyze();
   }
 
-  public decisionCriterionClass(subj: string): AbstractProcessor {
+  public decisionCriterionClass(
+    subj: string,
+    webMode: boolean,
+  ): AbstractProcessor {
     if (!subj) {
       throw new Error('Не был получен код предмета.');
     }
 
     switch (subj) {
       case subjCodes.russianLanguage:
-        return new RussianL(this.markUpExample);
+        return new RussianL(this.markUpExample, webMode);
       case subjCodes.russianLanguageFree:
-        return new RussianLFree(this.markUpExample);
+        return new RussianLFree(this.markUpExample, webMode);
       case subjCodes.literature:
-        return new Literature(this.markUpExample);
+        return new Literature(this.markUpExample, webMode);
       case subjCodes.socialScience:
-        return new SocialScience(this.markUpExample);
+        return new SocialScience(this.markUpExample, webMode);
       case subjCodes.history:
-        return new History(this.markUpExample);
+        return new History(this.markUpExample, webMode);
       case subjCodes.englishLanguage:
       case subjCodes.englishLanguageFree:
-        return new EnglishL(this.markUpExample);
+        return new EnglishL(this.markUpExample, webMode);
     }
 
     throw new Error(

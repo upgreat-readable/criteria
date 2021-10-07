@@ -1,7 +1,7 @@
 import { AbstractProcessor } from '../estimate/subj-processors/abstractProcessor';
 
 export interface ICriterionFabric {
-  decisionCriterionClass(subj: string): AbstractProcessor;
+  decisionCriterionClass(subj: string, webMode: boolean): AbstractProcessor;
   getSubj(): string;
 }
 

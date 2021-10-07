@@ -115,8 +115,10 @@ export class History extends AbstractProcessor {
 
     this.setK1();
 
-    if (this.criteria.K1 === 0) {
-      return this.criteria;
+    if (this.webMode) {
+      if (this.criteria.K1 === 0) {
+        return this.criteria;
+      }
     }
 
     this.setK2();
