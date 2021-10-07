@@ -12,4 +12,4 @@ const fileContent = fs.readFileSync(options.path).toString('utf8');
 const fileContentJson = JSON.parse(fileContent);
 
 const criteriaResult = new CriterionFabric(fileContentJson).run();
-console.log(criteriaResult);
+console.log(JSON.stringify(criteriaResult));
