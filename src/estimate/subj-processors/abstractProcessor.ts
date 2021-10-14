@@ -19,6 +19,10 @@ export abstract class AbstractProcessor {
     this.wordsCount = Operations.countWords(this.markUpData.text);
   }
 
+  updateMarkupData(markUpData: MarkUpData) {
+    this.markUpData = markUpData;
+  }
+
   tallyErrors(): void {
     let arSelCounts = [];
 
