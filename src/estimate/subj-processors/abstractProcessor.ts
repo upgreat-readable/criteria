@@ -35,7 +35,6 @@ export abstract class AbstractProcessor {
     }
 
     this.formattedEr = this.getCountIds(arSelCounts);
-    // console.log(this.formattedEr);
   }
 
   getCountIds = (target: { code: string; tag: string; count: number }[]) => {

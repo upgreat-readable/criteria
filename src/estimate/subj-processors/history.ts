@@ -202,7 +202,7 @@ export class History extends AbstractProcessor {
     );
     let param2 = sumToParam2 > 0 ? 1 : 0;
 
-    let pss1 = param1 + param2;
+    let pss1 = param1 - param2;
 
     let param3: number;
     if (
@@ -220,7 +220,7 @@ export class History extends AbstractProcessor {
     );
     let param4 = sumToParam4 > 0 ? 1 : 0;
 
-    let pss2 = param3 + param4;
+    let pss2 = param3 - param4;
 
     this.criteria.K3 = pss1 + pss2;
   }
